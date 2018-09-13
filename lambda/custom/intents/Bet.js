@@ -193,6 +193,8 @@ function getBet(event, attributes) {
   if (amountSlot && amountSlot.value) {
     // If the bet amount isn't an integer, we'll use the default value (1 unit)
     amount = parseInt(amountSlot.value);
+  } else if (player.lineBet && (event.request.intent.name === 'OddsBetIntent')) {
+    amount = player.lineBet * game.maxOdds;
   } else if (player.bets) {
     amount = player.bets[player.bets.length - 1].amount;
   } else {

@@ -57,6 +57,7 @@ module.exports = {
     let missingBets;
     let switchState;
     let playerNumber;
+    let newShooter;
 
     // First, place bets for anyone who hasn't made a bet
     attributes.temp.roundOver = undefined;
@@ -164,6 +165,10 @@ module.exports = {
         game.point = total;
         switchState = true;
         speech += res.getString('ROLL_POINT_ESTABLISHED');
+        if (!attributes.prompts.takeOdds) {
+          attributes.prompts.takeOdds = true;
+          speech += res.getString('ROLL_TAKE_ODDS');
+        }
         game.players.forEach((player) => {
           utils.getLineBet(player.bets).point = total;
         });
@@ -176,6 +181,7 @@ module.exports = {
         attributes.temp.roundOver = true;
         game.rounds = (game.rounds + 1) || 1;
         if (total === 7) {
+          newShooter = true;
           speech += res.getString('ROLL_SEVEN_CRAPS');
         } else {
           speech += res.getString('ROLL_GOT_POINT');
@@ -233,6 +239,13 @@ module.exports = {
         .withShouldEndSession(true)
         .getResponse();
     } else {
+      // Go to the next shooter if they crapped out
+      if (newShooter) {
+        game.shooter = (game.shooter + 1) % game.players.length;
+        speech += res.getString('ROLL_NEW_SHOOTER').replace('{0}', game.shooter + 1);
+      }
+      attributes.temp.bettingPlayer = game.shooter;
+
       // And reprompt
       speech += reprompt;
       return handlerInput.responseBuilder

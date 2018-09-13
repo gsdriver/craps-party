@@ -25,7 +25,7 @@ module.exports = {
         const data = {
           userId: event.session.user.userId,
           tableSize: game.players.length,
-          rounds: attributes.temp.rounds,
+          rounds: game.rounds,
         };
         s3.putObject({Body: JSON.stringify(data),
              Bucket: 'garrett-alexa-usage',

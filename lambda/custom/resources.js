@@ -48,6 +48,8 @@ const common = {
   'ROLL_GOT_POINT': 'You rolled the point! ',
   'ROLL_OFF_TABLE': 'Oops, one of the dice fell off the table - rolling again. ',
   'ROLL_ALLPLAYERS_OUT': 'That\'s it, all players are out of money! ',
+  'ROLL_NEW_SHOOTER': 'New shooter coming out! Player {0} let\'s roll! |Good run, now let\'s give the <say-as interpret-as="ordinal">{0}</say-as> player a turn! ',
+  'ROLL_TAKE_ODDS': '<break time=\'300ms\'/> Now that the point is established, any player can place an odds bet. Just press your button and say place odds bet. ',
   // Unhandled.js
   'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.|What you thinking?',
   'UNKNOWN_INTENT_REPROMPT': 'Try saying Bet.',
