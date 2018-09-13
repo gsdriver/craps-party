@@ -43,6 +43,9 @@ module.exports = {
     let reprompt;
 
     game.timestamp = Date.now();
+    buttons.lightPlayer(handlerInput,
+      attributes.temp.buttonId,
+      buttons.getPlayerColor(game.players.length));
     game.players.push({
       buttonId: attributes.temp.buttonId,
       bankroll: game.startingBankroll,

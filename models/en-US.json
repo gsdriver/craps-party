@@ -93,12 +93,27 @@
           "samples": [
             "place odds",
             "place an odds bet",
+            "take odds",
             "lay odds for {Amount}",
             "lay odds for {Amount} dollars",
             "lay odds for {Amount} units",
+            "take odds for {Amount}",
+            "take odds for {Amount} dollars",
+            "take odds for {Amount} units",
+            "odds for {Amount}",
+            "odds for {Amount} dollars",
+            "odds for {Amount} units",
             "place odds for {Amount}",
             "place odds for {Amount} dollars",
-            "place odds for {Amount} units"
+            "place odds for {Amount} units",
+            "place {Amount} dollar odds",
+            "place {Amount} unit odds",
+            "take {Amount} dollar odds",
+            "take {Amount} unit odds",
+            "lay {Amount} dollar odds",
+            "lay {Amount} unit odds",
+            "{Amount} dollar odds",
+            "{Amount} unit odds"
           ]
         },
         {

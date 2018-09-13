@@ -37,9 +37,6 @@ module.exports = {
     return ((player >= 0) && (player < colors.length)) ? colors[player] : 'FFFFFF';
   },
   startInputHandler: function(handlerInput) {
-    const attributes = handlerInput.attributesManager.getSessionAttributes();
-    const game = attributes[attributes.currentGame];
-
     if (module.exports.supportButtons(handlerInput)) {
       // We'll allow them to press the button again
       const inputDirective = {
@@ -63,29 +60,39 @@ module.exports = {
           },
         },
       };
-
-      // If there is a shooter, we want a double click from them
-      if (game.shooter !== undefined) {
-        const id = game.players[game.shooter].buttonId;
-        inputDirective.recognizers['shooter_roll'] = {
-          'type': 'match',
-          'anchor': 'end',
-          'fuzzy': false,
-          'gadgetIds': [id],
-          'actions': ['down', 'up'],
-          'pattern': [
-            {
+      handlerInput.responseBuilder.addDirective(inputDirective);
+    }
+  },
+  rollCallInputHandler: function(handlerInput) {
+    if (module.exports.supportButtons(handlerInput)) {
+      // We'll allow them to continue to press buttons until
+      // the timeout is reached and which point the game starts
+      const inputDirective = {
+        'type': 'GameEngine.StartInputHandler',
+        'timeout': 30000,
+        'recognizers': {
+          'button_down_recognizer': {
+            'type': 'match',
+            'fuzzy': false,
+            'anchor': 'end',
+            'pattern': [{
               'action': 'down',
-              'gadgetIds': [id],
-            },
-            {
-              'action': 'down',
-              'gadgetIds': [id],
-            },
-          ],
-        };
-      }
-
+            }],
+          },
+        },
+        'events': {
+          'button_down_event': {
+            'meets': ['button_down_recognizer'],
+            'reports': 'matches',
+            'shouldEndInputHandler': false,
+          },
+          'timeout': {
+            'meets': ['timed out'],
+            'reports': 'history',
+            'shouldEndInputHandler': true,
+          },
+        },
+      };
       handlerInput.responseBuilder.addDirective(inputDirective);
     }
   },
@@ -229,8 +236,9 @@ module.exports = {
   },
   addLaunchAnimation: function(handlerInput) {
     if (module.exports.supportButtons(handlerInput)) {
-      // Flash the buttons white a few times
-      // Then place them all in a steady white state
+      // Flash the buttons white during roll call
+      // This will intensify until it completes,
+      // after the timeout it will auto-start the game
       const buttonIdleDirective = {
         'type': 'GadgetController.SetLight',
         'version': 1,
@@ -247,23 +255,22 @@ module.exports = {
       };
 
       // Add to the animations array
-      let i;
-      for (i = 0; i < 4; i++) {
+      // This ends up finishing in about 30 seconds
+      const sequence = [1500, 1500, 1500, 1500,
+        900, 900, 900, 900, 900, 900, 900,
+        600, 600, 600, 600,
+        300, 300, 300, 300];
+      sequence.forEach((time) => {
         buttonIdleDirective.parameters.animations[0].sequence.push({
-          'durationMs': 400,
+          'durationMs': time,
           'color': 'FFFFFF',
           'blend': true,
         });
         buttonIdleDirective.parameters.animations[0].sequence.push({
-          'durationMs': 300,
+          'durationMs': (time * 3) / 4,
           'color': '000000',
           'blend': true,
         });
-      }
-      buttonIdleDirective.parameters.animations[0].sequence.push({
-        'durationMs': 60000,
-        'color': 'FFFFFF',
-        'blend': false,
       });
       handlerInput.responseBuilder.addDirective(buttonIdleDirective);
     }

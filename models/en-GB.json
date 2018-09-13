@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "craps party",
+      "invocationName": "dice party",
       "intents": [
         {
           "name": "PassBetIntent",
@@ -93,12 +93,27 @@
           "samples": [
             "place odds",
             "place an odds bet",
+            "take odds",
             "lay odds for {Amount}",
             "lay odds for {Amount} pounds",
             "lay odds for {Amount} units",
+            "take odds for {Amount}",
+            "take odds for {Amount} pounds",
+            "take odds for {Amount} units",
+            "odds for {Amount}",
+            "odds for {Amount} pounds",
+            "odds for {Amount} units",
             "place odds for {Amount}",
             "place odds for {Amount} pounds",
-            "place odds for {Amount} units"
+            "place odds for {Amount} units",
+            "place {Amount} pound odds",
+            "place {Amount} unit odds",
+            "take {Amount} pound odds",
+            "take {Amount} unit odds",
+            "lay {Amount} pound odds",
+            "lay {Amount} unit odds",
+            "{Amount} pound odds",
+            "{Amount} unit odds"
           ]
         },
         {

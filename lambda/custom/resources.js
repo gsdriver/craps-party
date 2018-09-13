@@ -22,14 +22,17 @@ const common = {
   'BETPROMPT_SHOOTER': 'OK shooter, place a bet or press the button again to roll the dice. |Shooter, want to bet? Or press the button to roll the dice. |Let\'s hear what the shooter wants to bet! Or press the button to get those dice rolling! ',
   'BETPROMPT_SHOOTER_REPROMPT': 'Come on shooter <break time=\'300ms\'/> place a bet or press the button to roll.',
   'BETPROMPT_PLACEBET_REPROMPT': 'Place your bet <say-as interpret-as="ordinal">{0}</say-as> player',
+  // EndRollCall.js
+  'ENDROLLCALL_NOPLAYERS': 'Looks like no one\'s there. Come back to {0} when you\'re ready to play!',
+  'ENDROLLCALL_STARTGAME': 'OK, I think we have everyone. Press your Echo Button again to place bets, or say roll to roll the dice.',
+  'ENDROLLCALL_STARTGAME_REPROMPT': 'Press a button to bet or say roll to roll the dice.',
   // Exit.js
   'EXIT_GAME': '{0} Goodbye.',
   // Help.js
-  'HELP_CARD_TITLE': 'Craps Table',
-  'HELP_CARD_TEXT': 'Craps is a fast-paced game played with a pair of dice. On the first roll of the dice a total of 7 or 11 wins while a roll of 2, 3, or 12 loses.  Any other roll establishes a point. You continue rolling the dice until you either roll the point again (and win), or roll a 7 (and lose).\n  At the start of the game, each player buzzes in with an Echo Button. Each player can then place a bet by pressing the Echo Button. You must bet a line bet which is either a PASS BET which pays if the shooter wins according to the rules above, or a DON\'T PASS bet which will pay if the shooter loses (it pushess if the initial roll is 12). Any player who doesn\'t place a line bet before the shooter rolls the dice will automatically place a pass bet at the table minimum. You can also place a FIELD BET which which pays if the next roll is 2, 3, 4, 9, 10, 11, or 12 (it pays 2:1 on a 12) and loses on all other rolls. Once the point is established you can place an ODDS BET of up to 10 times your line bet. This bet pays true odds if the point is rolled (that is, 2:1 if the point is 4 or 10, 3:2 if the point is 5 or 9, and 6:5 if the point is 6 or 8). If you accidentally place the wrong bet you can say REMOVE BET to remove the bet, and you can say REPEAT to hear the current bankroll and full set of bets you have up. Good luck!',
+  'HELP_CARD_TEXT': '{0} is a fast-paced game played with a pair of dice. On the first roll of the dice a total of 7 or 11 wins while a roll of 2, 3, or 12 loses.  Any other roll establishes a point. You continue rolling the dice until you either roll the point again (and win), or roll a 7 (and lose).\n  At the start of the game, each player buzzes in with an Echo Button. Each player can then place a bet by pressing the Echo Button. You must bet a line bet which is either a PASS BET which pays if the shooter wins according to the rules above, or a DON\'T PASS bet which will pay if the shooter loses (it pushess if the initial roll is 12). Any player who doesn\'t place a line bet before the shooter rolls the dice will automatically place a pass bet at the table minimum. You can also place a FIELD BET which which pays if the next roll is 2, 3, 4, 9, 10, 11, or 12 (it pays 2:1 on a 12) and loses on all other rolls. Once the point is established you can place an ODDS BET of up to 10 times your line bet. This bet pays true odds if the point is rolled (that is, 2:1 if the point is 4 or 10, 3:2 if the point is 5 or 9, and 6:5 if the point is 6 or 8). If you accidentally place the wrong bet you can say REMOVE BET to remove the bet, and you can say REPEAT to hear the current bankroll and full set of bets you have up. Good luck!',
   // Launch.js
-  'LAUNCH_WELCOME_BUTTON': 'Welcome to Craps Party.  Could the first person get us started by pressing an Echo Button?|Let\'s play Craps Table! Player one, press an Echo Button.|Would the first player press an Echo Button to play Craps Party?',
-  'LAUNCH_NEED_BUTTONS': 'Sorry to play Craps Party you must have Echo Buttons.',
+  'LAUNCH_WELCOME_BUTTON': 'Welcome to {0}.  Could the first person get us started by pressing an Echo Button?|Let\'s play {0}! Player one, press an Echo Button.|Would the first player press an Echo Button to play {0}?',
+  'LAUNCH_NEED_BUTTONS': 'Sorry to play {0} you must have Echo Buttons.',
   'LAUNCH_REPROMPT': 'Would you like to play? ',
   // Remove.js
   'REMOVE_REPROMPT': 'What else can I help you with?',
@@ -53,8 +56,6 @@ const common = {
   // Unhandled.js
   'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.|What you thinking?',
   'UNKNOWN_INTENT_REPROMPT': 'Try saying Bet.',
-  // utils.js
-  'DISPLAY_TITLE': 'Craps Party',
 };
 
 const dollar = {
@@ -69,6 +70,8 @@ const dollar = {
   'ROLL_NET_WIN': ' You won ${0}. ',
   'ROLL_NET_LOSE': ' You lost ${0}. ',
   'ROLL_MISSING_BETS': 'Some players didn\'t get a bet in. I\'ll put them down for a pass bet at ${0}. ',
+  // utils.js
+  'SKILL_NAME': 'Craps Party',
   // From this file
   'FORMAT_PASSBET': '${0} on the pass line',
   'FORMAT_DONTPASSBET': '${0} on the don\'t pass line',
@@ -90,6 +93,8 @@ const pound = {
   'ROLL_NET_WIN': ' You won £{0}. ',
   'ROLL_NET_LOSE': ' You lost £{0}. ',
   'ROLL_MISSING_BETS': 'Some players didn\'t get a bet in. I\'ll put them down for a pass bet at £{0}. ',
+  // utils.js
+  'SKILL_NAME': 'Dice Party',
   // From this file
   'FORMAT_PASSBET': '£{0} on the pass line',
   'FORMAT_DONTPASSBET': '£{0} on the don\'t pass line',

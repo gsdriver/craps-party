@@ -35,7 +35,7 @@ module.exports = {
         .addImageInstance(imageURL)
         .getImage();
       const textContent = new Alexa.PlainTextContentHelper()
-        .withPrimaryText(res.getString('DISPLAY_TITLE'))
+        .withPrimaryText(res.getString('SKILL_NAME'))
         .getTextContent();
       response.addRenderTemplateDirective({
         type: 'BodyTemplate1',

@@ -14,7 +14,31 @@
           }
         }
       },
-      "in_skill_products": []
+      "in_skill_products": [],
+      "resources": {
+        "manifest": {
+          "eTag": "e8692912745c7aead9e373eb9a0cdedc"
+        },
+        "interactionModel": {
+          "en-GB": {
+            "eTag": "af693101c02d06c6d010aad3cba58b42"
+          },
+          "en-US": {
+            "eTag": "dcc831319d2a8c7d77a07336e2af5880"
+          }
+        },
+        "lambda": [
+          {
+            "arn": "arn:aws:lambda:us-east-1:129065607926:function:CrapsParty",
+            "functionName": "arn:aws:lambda:us-east-1:129065607926:function:CrapsParty",
+            "awsRegion": "us-east-1",
+            "alexaUsage": [
+              "custom/default"
+            ],
+            "revisionId": "1d9af860-f3e0-49d5-8f78-94ba5c103c93"
+          }
+        ]
+      }
     }
   }
 }

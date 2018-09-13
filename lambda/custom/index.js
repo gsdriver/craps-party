@@ -7,6 +7,7 @@ const Remove = require('./intents/Remove');
 const Roll = require('./intents/Roll');
 const Bet = require('./intents/Bet');
 const BetPrompt = require('./intents/BetPrompt');
+const EndRollCall = require('./intents/EndRollCall');
 const Help = require('./intents/Help');
 const Exit = require('./intents/Exit');
 const SessionEnd = require('./intents/SessionEnd');
@@ -69,7 +70,7 @@ const saveResponseInterceptor = {
 
       if (response) {
         utils.drawTable(handlerInput);
-        if (attributes.temp.newSession) {
+        if (attributes.temp && attributes.temp.newSession) {
           // Set up the buttons to all flash, welcoming the user to press a button
           buttons.addLaunchAnimation(handlerInput);
           buttons.buildButtonDownAnimationDirective(handlerInput, []);
@@ -135,6 +136,7 @@ function runGame(event, context, callback) {
       Remove,
       BetPrompt,
       Roll,
+      EndRollCall,
       SessionEnd,
       Repeat,
       Unhandled

@@ -19,12 +19,12 @@ module.exports = {
     if (buttons.supportButtons(handlerInput)) {
       attributes.temp.addingPlayers = true;
       return handlerInput.responseBuilder
-        .speak(res.getString('LAUNCH_WELCOME_BUTTON'))
+        .speak(res.getString('LAUNCH_WELCOME_BUTTON').replace('{0}', res.getString('SKILL_NAME')))
         .reprompt(res.getString('LAUNCH_REPROMPT'))
         .getResponse();
     } else {
       return handlerInput.responseBuilder
-        .speak(res.getString('LAUNCH_NEED_BUTTONS'))
+        .speak(res.getString('LAUNCH_NEED_BUTTONS').replace('{0}', res.getString('SKILL_NAME')))
         .withShouldEndSession(true)
         .getResponse();
     }

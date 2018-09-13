@@ -16,7 +16,8 @@ module.exports = {
     return handlerInput.responseBuilder
       .speak('Help is on the way')
       .reprompt('Help is on the way')
-      .withSimpleCard(res.getString('HELP_CARD_TITLE'), res.getString('HELP_CARD_TEXT'))
+      .withSimpleCard(res.getString('SKILL_NAME'),
+        res.getString('HELP_CARD_TEXT').replace('{0}', res.getString('SKILL_NAME')))
       .getResponse();
   },
 };

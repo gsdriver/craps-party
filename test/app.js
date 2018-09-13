@@ -7,7 +7,7 @@ AWS.config.update({region: 'us-east-1'});
 const dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 const fs = require('fs');
 
-const LOCALE='en-US';
+const LOCALE='en-GB';
 const APPID = 'amzn1.ask.skill.eecdf80e-72f4-4331-938f-f33c9e7f523e';
 
 function BuildEvent(argv)
@@ -26,6 +26,7 @@ function BuildEvent(argv)
   var fallback = {'name': 'AMAZON.FallbackIntent', 'slots': {}};
   var stop = {'name': 'AMAZON.StopIntent', 'slots': {}};
   var cancel = {'name': 'AMAZON.CancelIntent', 'slots': {}};
+  var returnEvent;
 
   var lambda = {
     "session": {
@@ -195,6 +196,7 @@ function BuildEvent(argv)
   }
 
   // If there is no argument, then we'll just return
+  returnEvent = lambda;
   if (argv.length <= 2) {
     console.log('I need some parameters');
     return null;
@@ -232,12 +234,12 @@ function BuildEvent(argv)
   } else if (argv[2] == 'repeat') {
     lambda.request.intent = repeat;
   } else if (argv[2] == 'launch') {
-    return openEvent;
+    returnEvent = openEvent;
   } else if (argv[2] == 'button') {
     if (argv.length > 3) {
       buttonEvent.request.events[0].inputEvents[0].gadgetId = argv[3];
     }
-    return buttonEvent;
+    returnEvent = buttonEvent;
   } else if (argv[2] == 'help') {
     lambda.request.intent = help;
   } else if (argv[2] == 'fallback') {
@@ -257,13 +259,13 @@ function BuildEvent(argv)
   }
 
   // Write the last action
-  fs.writeFile('lastaction.txt', JSON.stringify(lambda), (err) => {
+  fs.writeFile('lastaction.txt', JSON.stringify(returnEvent), (err) => {
     if (err) {
       console.log(err);
     }
   });
 
-  return lambda;
+  return returnEvent;
 }
 
 function ssmlToText(ssml) {

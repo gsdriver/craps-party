@@ -19,19 +19,19 @@
           "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/877a/af87d5ce6a414496811864316dae828b/APP_ICON_LARGE?versionId=gRYNTDdQAVoLdmNBOjv9E4HwxMKWNyWm&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=clHywRiv%2BfWU3ILiBPG4KOSvGmE%3D"
         },
         "en-GB": {
-          "summary": "Play Craps with up to four players using Echo Buttons!",
+          "summary": "Play Dice with up to four players using Echo Buttons!",
           "examplePhrases": [
-            "Alexa, open craps party",
+            "Alexa, open dice party",
             "roll the dice"
           ],
           "keywords": [
-            "craps",
+            "dice",
             "casino",
             "game"
           ],
-          "name": "Craps Party",
+          "name": "Dice Party",
           "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/ed85/72b8a01fb1074c6ea14d605645091f39/APP_ICON?versionId=ofRVi4ygwmd1ZBdJu9yFvxv88U1vHLOg&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=crhHW4MP4sdTSTi%2F6VRthzILMQ8%3D",
-          "description": "Play Craps with up to 4 players using Echo Buttons!",
+          "description": "Play Dice with up to 4 players using Echo Buttons!",
           "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/877a/af87d5ce6a414496811864316dae828b/APP_ICON_LARGE?versionId=gRYNTDdQAVoLdmNBOjv9E4HwxMKWNyWm&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=clHywRiv%2BfWU3ILiBPG4KOSvGmE%3D"
         }
       },
