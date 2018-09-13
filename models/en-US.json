@@ -1,0 +1,223 @@
+{
+  "interactionModel": {
+    "languageModel": {
+      "invocationName": "craps party",
+      "intents": [
+        {
+          "name": "PassBetIntent",
+          "slots": [
+            {
+              "name": "Amount",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "bet",
+            "place a bet",
+            "place a pass bet",
+            "place a pass line bet",
+            "bet {Amount}",
+            "bet {Amount} dollars",
+            "bet {Amount} units",
+            "place a bet for {Amount}",
+            "place a bet for {Amount} dollars",
+            "place a bet for {Amount} units",
+            "place a pass bet for {Amount}",
+            "place a pass bet for {Amount} dollars",
+            "place a pass bet for {Amount} units",
+            "place a pass line bet for {Amount}",
+            "place a pass line bet for {Amount} dollars",
+            "place a pass line bet for {Amount} units",
+            "bet {Amount} on the pass line",
+            "bet {Amount} dollars on the pass line",
+            "bet {Amount} units on the pass line",
+            "{Amount} on the pass line",
+            "{Amount} dollars on the pass line",
+            "{Amount} units on the pass line",
+            "put {Amount} on the pass line",
+            "put {Amount} dollars on the pass line",
+            "put {Amount} units on the pass line"
+          ]
+        },
+        {
+          "name": "DontPassBetIntent",
+          "slots": [
+            {
+              "name": "Amount",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "place a don't pass bet",
+            "place a don't pass line bet",
+            "bet {Amount} on don't pass",
+            "bet {Amount} dollars on don't pass",
+            "bet {Amount} units on don't pass",
+            "place a bet for {Amount} on don't pass",
+            "place a bet for {Amount} dollars on don't pass",
+            "place a bet for {Amount} units on don't pass",
+            "place a don't pass bet for {Amount}",
+            "place a don't pass bet for {Amount} dollars",
+            "place a don't pass bet for {Amount} units",
+            "place a don't pass line bet for {Amount}",
+            "place a don't pass line bet for {Amount} dollars",
+            "place a don't pass line bet for {Amount} units",
+            "bet {Amount} on the don't pass line",
+            "bet {Amount} dollars on the don't pass line",
+            "bet {Amount} units on the don't pass line",
+            "{Amount} on the don't pass line",
+            "{Amount} dollars on the don't pass line",
+            "{Amount} units on the don't pass line",
+            "put {Amount} on the don't pass line",
+            "put {Amount} dollars on the don't pass line",
+            "put {Amount} units on the don't pass line",
+            "bet {Amount} on don't pass",
+            "bet {Amount} dollars on don't pass",
+            "bet {Amount} units on don't pass",
+            "{Amount} on don't pass",
+            "{Amount} dollars on don't pass",
+            "{Amount} units on don't pass",
+            "put {Amount} on don't pass",
+            "put {Amount} dollars on don't pass",
+            "put {Amount} units on don't pass"
+          ]
+        },
+        {
+          "name": "OddsBetIntent",
+          "slots": [
+            {
+              "name": "Amount",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "place odds",
+            "place an odds bet",
+            "lay odds for {Amount}",
+            "lay odds for {Amount} dollars",
+            "lay odds for {Amount} units",
+            "place odds for {Amount}",
+            "place odds for {Amount} dollars",
+            "place odds for {Amount} units"
+          ]
+        },
+        {
+          "name": "FieldBetIntent",
+          "slots": [
+            {
+              "name": "Amount",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "place a field bet",
+            "play the field",
+            "place a field bet for {Amount}",
+            "place a field bet for {Amount} dollars",
+            "place a field bet for {Amount} units",
+            "play the field for {Amount}",
+            "play the field for {Amount} dollars",
+            "play the field for {Amount} units",
+            "field for {Amount}",
+            "field for {Amount} dollars",
+            "field for {Amount} units",
+            "{Amount} on the field",
+            "{Amount} dollars on the field",
+            "{Amount} units on the field"
+          ]
+        },
+        {
+          "name": "AMAZON.RepeatIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.YesIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NoIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.FallbackIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.CancelIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.HelpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.StopIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateHomeIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.MoreIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NavigateSettingsIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.NextIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PageUpIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PageDownIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.PreviousIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollRightIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollDownIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollLeftIntent",
+          "samples": []
+        },
+        {
+          "name": "AMAZON.ScrollUpIntent",
+          "samples": []
+        },
+        {
+          "name": "RemoveIntent",
+          "samples": [
+            "remove my bet",
+            "remove the last bet",
+            "undo that bet",
+            "undo the last bet"
+          ]
+        },
+        {
+          "name": "RollIntent",
+          "samples": [
+            "let's play",
+            "shoot",
+            "roll",
+            "shoot the dice",
+            "roll the dice"
+          ]
+        }
+      ]
+    }
+  }
+}

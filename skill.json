@@ -1,0 +1,81 @@
+{
+  "manifest": {
+    "publishingInformation": {
+      "locales": {
+        "en-US": {
+          "summary": "Play Craps with up to four players using Echo Buttons!",
+          "examplePhrases": [
+            "Alexa, open craps party",
+            "roll the dice"
+          ],
+          "keywords": [
+            "craps",
+            "casino",
+            "game"
+          ],
+          "name": "Craps Party",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/ed85/72b8a01fb1074c6ea14d605645091f39/APP_ICON?versionId=ofRVi4ygwmd1ZBdJu9yFvxv88U1vHLOg&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=crhHW4MP4sdTSTi%2F6VRthzILMQ8%3D",
+          "description": "Play Craps with up to 4 players using Echo Buttons!",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/877a/af87d5ce6a414496811864316dae828b/APP_ICON_LARGE?versionId=gRYNTDdQAVoLdmNBOjv9E4HwxMKWNyWm&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=clHywRiv%2BfWU3ILiBPG4KOSvGmE%3D"
+        },
+        "en-GB": {
+          "summary": "Play Craps with up to four players using Echo Buttons!",
+          "examplePhrases": [
+            "Alexa, open craps party",
+            "roll the dice"
+          ],
+          "keywords": [
+            "craps",
+            "casino",
+            "game"
+          ],
+          "name": "Craps Party",
+          "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/ed85/72b8a01fb1074c6ea14d605645091f39/APP_ICON?versionId=ofRVi4ygwmd1ZBdJu9yFvxv88U1vHLOg&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=crhHW4MP4sdTSTi%2F6VRthzILMQ8%3D",
+          "description": "Play Craps with up to 4 players using Echo Buttons!",
+          "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/877a/af87d5ce6a414496811864316dae828b/APP_ICON_LARGE?versionId=gRYNTDdQAVoLdmNBOjv9E4HwxMKWNyWm&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=clHywRiv%2BfWU3ILiBPG4KOSvGmE%3D"
+        }
+      },
+      "isAvailableWorldwide": true,
+      "testingInstructions": "Use the Echo Buttons to designate up to four players for the game. You can use the button between rolls to indicate that you want to place a new bet.",
+      "category": "GAMES",
+      "distributionCountries": [],
+      "gadgetSupport": {
+        "maxGadgetButtons": 4,
+        "numPlayersMax": 4,
+        "minGadgetButtons": 1,
+        "requirement": "REQUIRED",
+        "numPlayersMin": 1
+      }
+    },
+    "apis": {
+      "custom": {
+        "endpoint": {
+          "sourceDir": "lambda\\custom"
+        },
+        "interfaces": [
+          {
+            "type": "RENDER_TEMPLATE",
+            "minimumTemplateVersion": "1.0"
+          },
+          {
+            "type": "GAME_ENGINE"
+          },
+          {
+            "type": "GADGET_CONTROLLER"
+          },
+          {
+            "type": "CAN_FULFILL_INTENT_REQUEST"
+          }
+        ]
+      }
+    },
+    "manifestVersion": "1.0",
+    "privacyAndCompliance": {
+      "allowsPurchases": false,
+      "isExportCompliant": true,
+      "containsAds": false,
+      "isChildDirected": false,
+      "usesPersonalInfo": false
+    }
+  }
+}
