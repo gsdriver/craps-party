@@ -33,7 +33,7 @@ module.exports = {
     return buttonId;
   },
   getPlayerColor: function(player) {
-    const colors = ['00FE10', 'FF0000', '0000FF', 'FFFF00'];
+    const colors = ['960DF3', '0000FF', 'FF6600', 'FFFF00'];
     return ((player >= 0) && (player < colors.length)) ? colors[player] : 'FFFFFF';
   },
   startInputHandler: function(handlerInput) {
@@ -170,105 +170,6 @@ module.exports = {
       handlerInput.responseBuilder.addDirective(buttonIdleDirective);
     }
   },
-  colorButton: function(handlerInput, buttonId, buttonColor) {
-    if (module.exports.supportButtons(handlerInput)) {
-      let i;
-      const buttonIdleDirective = {
-        'type': 'GadgetController.SetLight',
-        'version': 1,
-        'targetGadgets': [buttonId],
-        'parameters': {
-          'animations': [{
-            'repeat': 1,
-            'targetLights': ['1'],
-            'sequence': [],
-          }],
-          'triggerEvent': 'none',
-          'triggerEventTimeMs': 0,
-        },
-      };
-
-      // Pulse a few times white
-      for (i = 0; i < 4; i++) {
-        buttonIdleDirective.parameters.animations[0].sequence.push({
-          'durationMs': 400,
-          'color': 'FFFFFF',
-          'blend': true,
-        });
-        buttonIdleDirective.parameters.animations[0].sequence.push({
-          'durationMs': 300,
-          'color': '000000',
-          'blend': true,
-        });
-      }
-
-      // Then solid white (long is an extra four seconds)
-      buttonIdleDirective.parameters.animations[0].sequence.push({
-        'durationMs': 4000,
-        'color': 'FFFFFF',
-        'blend': false,
-      });
-
-      // Pulse based on whether they won or lost
-      for (i = 0; i < 4; i++) {
-        buttonIdleDirective.parameters.animations[0].sequence.push({
-          'durationMs': 400,
-          'color': buttonColor,
-          'blend': true,
-        });
-        buttonIdleDirective.parameters.animations[0].sequence.push({
-          'durationMs': 300,
-          'color': '000000',
-          'blend': true,
-        });
-      }
-
-      // And then back to white
-      buttonIdleDirective.parameters.animations[0].sequence.push({
-        'durationMs': 60000,
-        'color': 'FFFFFF',
-        'blend': false,
-      });
-      handlerInput.responseBuilder.addDirective(buttonIdleDirective);
-    }
-  },
-  flashLights: function(handlerInput, duration) {
-    if (module.exports.supportButtons(handlerInput)) {
-      // Flash the buttons white during roll call
-      // This will intensify until it completes,
-      // after the timeout it will auto-start the game
-
-      const buttonIdleDirective = {
-        'type': 'GadgetController.SetLight',
-        'version': 1,
-        'targetGadgets': getActiveButtons(handlerInput),
-        'parameters': {
-          'animations': [
-            {
-              'repeat': Math.round(duration / 1000),
-              'targetLights': ['1'],
-              'sequence': [
-                {
-                  'durationMs': 600,
-                  'color': 'FFFFFF',
-                  'blend': true,
-                },
-                {
-                  'durationMs': 400,
-                  'color': '000000',
-                  'blend': true,
-                },
-              ],
-            },
-          ],
-          'triggerEvent': 'none',
-          'triggerEventTimeMs': 0,
-        },
-      };
-
-      handlerInput.responseBuilder.addDirective(buttonIdleDirective);
-    }
-  },
   addLaunchAnimation: function(handlerInput) {
     if (module.exports.supportButtons(handlerInput)) {
       // Flash the buttons white during roll call
@@ -310,16 +211,239 @@ module.exports = {
       handlerInput.responseBuilder.addDirective(buttonIdleDirective);
     }
   },
+  addRollAnimation: function(handlerInput, duration, playerNumber) {
+    if (module.exports.supportButtons(handlerInput)) {
+      // Flash the buttons white while the roll is being read
+      // Then flash it green or red (based on win or loss)
+      // Finally turn on or off based on whether they are the shooter
+      const attributes = handlerInput.attributesManager.getSessionAttributes();
+      const game = attributes[attributes.currentGame];
+      let i;
+
+      const buttonDirective = {
+        'type': 'GadgetController.SetLight',
+        'version': 1,
+        'targetGadgets': [game.players[playerNumber].buttonId],
+        'parameters': {
+          'animations': [{
+            'repeat': 1,
+            'targetLights': ['1'],
+            'sequence': [],
+          }],
+          'triggerEvent': 'none',
+          'triggerEventTimeMs': 0,
+        },
+      };
+
+      // First animation - fade to white
+      buttonDirective.parameters.animations[0].sequence.push({
+        'durationMs': 1000,
+        'color': '000000',
+        'blend': false,
+      });
+      buttonDirective.parameters.animations[0].sequence.push({
+        'durationMs': duration,
+        'color': 'FFFFFF',
+        'blend': true,
+      });
+
+      // Did this player win or lose (or neither - in which case keep it white)
+      let winColor;
+      if (game.players[playerNumber].amountWon > 0) {
+        winColor = '00FE10';
+      } else if (game.players[playerNumber].amountWon < 0) {
+        winColor = 'FF0000';
+      } else {
+        winColor = 'FFFFFF';
+      }
+      for (i = 0; i < 3; i++) {
+        buttonDirective.parameters.animations[0].sequence.push({
+          'durationMs': 600,
+          'color': winColor,
+          'blend': true,
+        });
+        buttonDirective.parameters.animations[0].sequence.push({
+          'durationMs': 400,
+          'color': '000000',
+          'blend': true,
+        });
+      }
+
+      // Finally, turn this on or off based on whether you are the shooter
+      buttonDirective.parameters.animations[0].sequence.push({
+        'durationMs': 60000,
+        'color': (game.shooter === playerNumber) ? game.players[playerNumber].buttonColor : '000000',
+        'blend': false,
+      });
+      handlerInput.responseBuilder.addDirective(buttonDirective);
+    }
+  },
+/*
+  addLaunchAnimation: function(handlerInput) {
+    if (module.exports.supportButtons(handlerInput)) {
+      // Flash the buttons white during roll call
+      // This will intensify until it completes,
+      // after the timeout it will auto-start the game
+      const buttonIdleDirective = {
+        'type': 'GadgetController.SetLight',
+        'version': 1,
+        'targetGadgets': [],
+        'parameters': {
+          'animations': [],
+          'triggerEvent': 'none',
+          'triggerEventTimeMs': 0,
+        },
+      };
+
+      // Add to the animations array
+      // This ends up finishing in about 30 seconds
+      buttonIdleDirective.parameters.animations.push({
+        'repeat': 4,
+        'targetLights': ['1'],
+        'sequence': [
+          {
+            'durationMs': 1500,
+            'color': 'FFFFFF',
+            'blend': true,
+          },
+          {
+            'durationMs': 1125,
+            'color': '000000',
+            'blend': true,
+          },
+        ],
+      });
+      buttonIdleDirective.parameters.animations.push({
+        'repeat': 7,
+        'targetLights': ['1'],
+        'sequence': [
+          {
+            'durationMs': 900,
+            'color': 'FFFFFF',
+            'blend': true,
+          },
+          {
+            'durationMs': 675,
+            'color': '000000',
+            'blend': true,
+          },
+        ],
+      });
+      buttonIdleDirective.parameters.animations.push({
+        'repeat': 4,
+        'targetLights': ['1'],
+        'sequence': [
+          {
+            'durationMs': 600,
+            'color': 'FFFFFF',
+            'blend': true,
+          },
+          {
+            'durationMs': 450,
+            'color': '000000',
+            'blend': true,
+          },
+        ],
+      });
+      buttonIdleDirective.parameters.animations.push({
+        'repeat': 4,
+        'targetLights': ['1'],
+        'sequence': [
+          {
+            'durationMs': 300,
+            'color': 'FFFFFF',
+            'blend': true,
+          },
+          {
+            'durationMs': 225,
+            'color': '000000',
+            'blend': true,
+          },
+        ],
+      });
+
+      handlerInput.responseBuilder.addDirective(buttonIdleDirective);
+    }
+  },
+  addRollAnimation: function(handlerInput, duration, playerNumber) {
+    if (module.exports.supportButtons(handlerInput)) {
+      // Flash the buttons white while the roll is being read
+      // Then flash it green or red (based on win or loss)
+      // Finally turn on or off based on whether they are the shooter
+      const attributes = handlerInput.attributesManager.getSessionAttributes();
+      const game = attributes[attributes.currentGame];
+
+      const buttonDirective = {
+        'type': 'GadgetController.SetLight',
+        'version': 1,
+        'targetGadgets': [game.players[playerNumber].buttonId],
+        'parameters': {
+          'animations': [],
+          'triggerEvent': 'none',
+          'triggerEventTimeMs': 0,
+        },
+      };
+
+      // First animation - flashing white
+      buttonDirective.parameters.animations.push({
+        'repeat': Math.round(duration / 1000),
+        'targetLights': ['1'],
+        'sequence': [
+          {
+            'durationMs': 600,
+            'color': 'FFFFFF',
+            'blend': true,
+          },
+          {
+            'durationMs': 400,
+            'color': '000000',
+            'blend': true,
+          },
+        ],
+      });
+
+      // Did this player win or lose (or neither - in which case keep it white)
+      let winColor;
+      if (game.players[playerNumber].amountWon > 0) {
+        winColor = '00FE10';
+      } else if (game.players[playerNumber].amountWon < 0) {
+        winColor = 'FF0000';
+      } else {
+        winColor = 'FFFFFF';
+      }
+      buttonDirective.parameters.animations.push({
+        'repeat': 3,
+        'targetLights': ['1'],
+        'sequence': [
+          {
+            'durationMs': 600,
+            'color': winColor,
+            'blend': true,
+          },
+          {
+            'durationMs': 400,
+            'color': '000000',
+            'blend': true,
+          },
+        ],
+      });
+
+      // Finally, turn this on or off based on whether you are the shooter
+      buttonDirective.parameters.animations.push({
+        'repeat': 1,
+        'targetLights': ['1'],
+        'sequence': [
+          {
+            'durationMs': 60000,
+            'color': (game.shooter === playerNumber) ?
+              game.players[playerNumber].buttonColor : '000000',
+            'blend': false,
+          },
+        ],
+      });
+
+      handlerInput.responseBuilder.addDirective(buttonDirective);
+    }
+  },
+*/
 };
-
-function getActiveButtons(handlerInput) {
-  const attributes = handlerInput.attributesManager.getSessionAttributes();
-  const game = attributes[attributes.currentGame];
-  const buttonIds = [];
-
-  game.players.forEach((player) => {
-    buttonIds.push(player.buttonId);
-  });
-
-  return buttonIds;
-}

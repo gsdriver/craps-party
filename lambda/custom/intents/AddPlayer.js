@@ -41,13 +41,13 @@ module.exports = {
     const res = require('../resources')(handlerInput);
     let speech = '<audio src="soundbank://soundlibrary/ui/gameshow/amzn_ui_sfx_gameshow_positive_response_01"/> ';
     let reprompt;
+    const buttonColor = buttons.getPlayerColor(game.players.length);
 
     game.timestamp = Date.now();
-    buttons.lightPlayer(handlerInput,
-      attributes.temp.buttonId,
-      buttons.getPlayerColor(game.players.length));
+    buttons.lightPlayer(handlerInput, attributes.temp.buttonId, buttonColor);
     game.players.push({
       buttonId: attributes.temp.buttonId,
+      buttonColor: buttonColor,
       bankroll: game.startingBankroll,
       bets: [],
     });

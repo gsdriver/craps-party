@@ -91,6 +91,9 @@ const saveResponseInterceptor = {
           }
         }
       }
+      if (!process.env.NOLOG) {
+        console.log(JSON.stringify(response));
+      }
       resolve();
     });
   },

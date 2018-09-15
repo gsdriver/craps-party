@@ -155,6 +155,7 @@ module.exports = {
       });
 
       // Don't say anything if no bets won or lost
+      player.amountWon = (won - lost);
       if ((won > 0) || (lost > 0)) {
         speech += res.getString('ROLL_PLAYER_NUMBER').replace('{0}', playerNumber);
         if (won > lost) {
@@ -245,9 +246,6 @@ module.exports = {
       return keepPlayer;
     });
 
-    // Now for the buttons
-    // First flash during the speech (estimate based on length of string)
-    buttons.flashLights(handlerInput, speechTime);
     if (game.players.length === 0) {
       speech += res.getString('ROLL_ALLPLAYERS_OUT');
       return handlerInput.responseBuilder
@@ -259,15 +257,15 @@ module.exports = {
       if (newShooter) {
         game.shooter = (game.shooter + 1) % game.players.length;
         speech += res.getString('ROLL_NEW_SHOOTER').replace('{0}', game.shooter + 1);
-
-        // Color this button to indicate a new shooter
-        buttons.turnOffButtons(handlerInput);
-        buttons.lightPlayer(handlerInput,
-          game.players[game.shooter].buttonId,
-          buttons.getPlayerColor(game.shooter));
       }
       attributes.temp.bettingPlayer = game.shooter;
       buttons.startInputHandler(handlerInput);
+
+      // Now do an animation sequence for each player
+      let i;
+      for (i = 0; i < game.players.length; i++) {
+        buttons.addRollAnimation(handlerInput, speechTime, i);
+      }
 
       // And reprompt
       speech += reprompt;

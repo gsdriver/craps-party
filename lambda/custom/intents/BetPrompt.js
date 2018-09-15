@@ -58,7 +58,7 @@ module.exports = {
       // Color this player's button
       buttons.lightPlayer(handlerInput,
         game.players[attributes.temp.bettingPlayer].buttonId,
-        buttons.getPlayerColor(attributes.temp.bettingPlayer));
+        game.players[attributes.temp.bettingPlayer].buttonColor);
 
       if (attributes.temp.bettingPlayer === game.shooter) {
         speech += res.getString('BETPROMPT_SHOOTER');

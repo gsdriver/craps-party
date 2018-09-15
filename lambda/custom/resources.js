@@ -45,13 +45,12 @@ const common = {
   'REMOVE_CANTREMOVE_PASSBET': 'Sorry, you can\'t remove a line bet once a point has been established. ',
   'REMOVE_BET': 'Removing your bet of {0}. ',
   // From Repeat.js
-  'READ_BANKROLL': 'You have ${0}. ',
-  'READ_POINT': 'The point is {0}. ',
   'READ_BETS': 'You bet {0}. ',
+  'READ_POINT': 'The point is {0}. ',
   // Roll.js
   'ROLL_RESULT': 'Shooter got {0}. |The shooter rolled {0}. ',
   'ROLL_BUSTED': 'Player {0} lost all their money. Resetting their bankroll and clearing their bets. ',
-  'ROLL_BUSTED_PLAYEROUT': 'Player {0} lost all their money. You\'re outta here!',
+  'ROLL_BUSTED_PLAYEROUT': 'Player {0} lost all their money. You\'re outta here! ',
   'ROLL_PLAYER_NUMBER': '<say-as interpret-as="ordinal">{0}</say-as> player |Player {0} ',
   'ROLL_NET_PUSH': ' You broke even. ',
   'ROLL_REPROMPT': 'Say roll to roll the dice.',
@@ -64,7 +63,7 @@ const common = {
   'ROLL_NEW_SHOOTER': 'New shooter coming out! Player {0} let\'s roll! |Good run, now let\'s give the <say-as interpret-as="ordinal">{0}</say-as> player a turn! ',
   'ROLL_TAKE_ODDS': '<break time=\'300ms\'/> Now that the point is established, any player can place an odds bet. Just press your button and say place odds bet. ',
   // Unhandled.js
-  'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.|What you thinking?',
+  'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.',
   'UNKNOWN_ADDING_PLAYERS': 'Please press a new button to add players or one you\'ve already pressed to start the game.',
   'UNKNOWN_BETTING_PLAYER': 'You need to press a button first so I know who\'s talking.',
   'UNKNOWN_INTENT_REPROMPT': 'Try saying Bet.',
@@ -78,6 +77,8 @@ const dollar = {
   'ODDS_BET_PLACED': '${0} odds placed.',
   'FIELD_BET_PLACED': '${0} field bet placed.',
   'BET_DUPLICATE_NOT_ADDED': 'You already placed ${0} on this bet, and another ${1} would exceed the maximum bet of ${2}. ',
+  // From Repeat.js
+  'READ_BANKROLL': 'You have ${0}. ',
   // From Roll.js
   'ROLL_NET_WIN': ' You won ${0}. ',
   'ROLL_NET_LOSE': ' You lost ${0}. ',
@@ -101,6 +102,8 @@ const pound = {
   'ODDS_BET_PLACED': '£{0} odds placed.',
   'FIELD_BET_PLACED': '£{0} field bet placed.',
   'BET_DUPLICATE_NOT_ADDED': 'You already placed £{0} on this bet, and another £{1} would exceed the maximum bet of £{2}. ',
+  // From Repeat.js
+  'READ_BANKROLL': 'You have £{0}. ',
   // From Roll.js
   'ROLL_NET_WIN': ' You won £{0}. ',
   'ROLL_NET_LOSE': ' You lost £{0}. ',
