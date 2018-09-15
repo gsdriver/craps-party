@@ -39,7 +39,7 @@ module.exports = {
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
     const res = require('../resources')(handlerInput);
-    let speech;
+    let speech = '<audio src="soundbank://soundlibrary/ui/gameshow/amzn_ui_sfx_gameshow_positive_response_01"/> ';
     let reprompt;
 
     game.timestamp = Date.now();
@@ -53,12 +53,16 @@ module.exports = {
     });
     attributes.temp.buttonId = undefined;
 
-    if (game.players.length < 4) {
-      speech = res.getString('ADDPLAYER_NEWPLAYER')
+    if (game.players.length === 1) {
+      speech += res.getString('ADDPLAYER_FIRSTPLAYER')
+        .replace('{0}', game.players.length);
+      reprompt = res.getString('ADDPLAYER_NEWPLAYER_REPROMPT');
+    } else if (game.players.length < 4) {
+      speech += res.getString('ADDPLAYER_NEWPLAYER')
         .replace('{0}', game.players.length);
       reprompt = res.getString('ADDPLAYER_NEWPLAYER_REPROMPT');
     } else {
-      speech = res.getString('ADDPLAYER_MAXPLAYERS');
+      speech += res.getString('ADDPLAYER_MAXPLAYERS');
       reprompt = res.getString('ADDPLAYER_MAXPLAYERS_REPROMPT');
       utils.startGame(handlerInput);
     }

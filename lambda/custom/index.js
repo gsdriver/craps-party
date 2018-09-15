@@ -5,9 +5,9 @@ const CanFulfill = require('./intents/CanFulfill');
 const Launch = require('./intents/Launch');
 const Remove = require('./intents/Remove');
 const Roll = require('./intents/Roll');
+const EndRollCall = require('./intents/EndRollCall');
 const Bet = require('./intents/Bet');
 const BetPrompt = require('./intents/BetPrompt');
-const EndRollCall = require('./intents/EndRollCall');
 const Help = require('./intents/Help');
 const Exit = require('./intents/Exit');
 const SessionEnd = require('./intents/SessionEnd');
@@ -74,7 +74,7 @@ const saveResponseInterceptor = {
           // Set up the buttons to all flash, welcoming the user to press a button
           buttons.addLaunchAnimation(handlerInput);
           buttons.buildButtonDownAnimationDirective(handlerInput, []);
-          buttons.startInputHandler(handlerInput);
+          buttons.rollCallInputHandler(handlerInput);
           attributes.temp.newSession = undefined;
         }
         if (response.shouldEndSession) {

@@ -48,25 +48,26 @@ module.exports = {
     let speech = '';
     let reprompt;
 
+    buttons.turnOffButtons(handlerInput);
     game.timestamp = Date.now();
     if (attributes.temp.addingPlayers) {
       speech += res.getString('BETPROMPT_STARTING').replace('{0}', game.players.length);
       utils.startGame(handlerInput);
-    }
-
-    // Color this player's button and turn off the others
-    buttons.turnOffButtons(handlerInput);
-    buttons.lightPlayer(handlerInput,
-      game.players[attributes.temp.bettingPlayer].buttonId,
-      buttons.getPlayerColor(attributes.temp.bettingPlayer));
-
-    if (attributes.temp.bettingPlayer === game.shooter) {
-      speech += res.getString('BETPROMPT_SHOOTER');
-      reprompt = res.getString('BETPROMPT_SHOOTER_REPROMPT');
+      attributes.temp.bettingPlayer = undefined;
     } else {
-      speech += res.getString('BETPROMPT_PLACEBET').replace('{0}', attributes.temp.bettingPlayer + 1);
-      reprompt = res.getString('BETPROMPT_PLACEBET_REPROMPT')
-          .replace('{0}', attributes.temp.bettingPlayer + 1);
+      // Color this player's button
+      buttons.lightPlayer(handlerInput,
+        game.players[attributes.temp.bettingPlayer].buttonId,
+        buttons.getPlayerColor(attributes.temp.bettingPlayer));
+
+      if (attributes.temp.bettingPlayer === game.shooter) {
+        speech += res.getString('BETPROMPT_SHOOTER');
+        reprompt = res.getString('BETPROMPT_SHOOTER_REPROMPT');
+      } else {
+        speech += res.getString('BETPROMPT_PLACEBET').replace('{0}', attributes.temp.bettingPlayer + 1);
+        reprompt = res.getString('BETPROMPT_PLACEBET_REPROMPT')
+            .replace('{0}', attributes.temp.bettingPlayer + 1);
+      }
     }
 
     return handlerInput.responseBuilder

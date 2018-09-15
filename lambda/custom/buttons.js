@@ -41,7 +41,7 @@ module.exports = {
       // We'll allow them to press the button again
       const inputDirective = {
         'type': 'GameEngine.StartInputHandler',
-        'timeout': 60000,
+        'timeout': 30000,
         'recognizers': {
           'button_down_recognizer': {
             'type': 'match',
@@ -65,8 +65,6 @@ module.exports = {
   },
   rollCallInputHandler: function(handlerInput) {
     if (module.exports.supportButtons(handlerInput)) {
-      // We'll allow them to continue to press buttons until
-      // the timeout is reached and which point the game starts
       const inputDirective = {
         'type': 'GameEngine.StartInputHandler',
         'timeout': 30000,
@@ -108,7 +106,7 @@ module.exports = {
             'targetLights': ['1'],
             'sequence': [{
               'durationMs': 500,
-              'color': 'FFFF00',
+              'color': 'FFFFFF',
               'intensity': 255,
               'blend': false,
             }],
@@ -234,6 +232,43 @@ module.exports = {
       handlerInput.responseBuilder.addDirective(buttonIdleDirective);
     }
   },
+  flashLights: function(handlerInput, duration) {
+    if (module.exports.supportButtons(handlerInput)) {
+      // Flash the buttons white during roll call
+      // This will intensify until it completes,
+      // after the timeout it will auto-start the game
+
+      const buttonIdleDirective = {
+        'type': 'GadgetController.SetLight',
+        'version': 1,
+        'targetGadgets': getActiveButtons(handlerInput),
+        'parameters': {
+          'animations': [
+            {
+              'repeat': Math.round(duration / 1000),
+              'targetLights': ['1'],
+              'sequence': [
+                {
+                  'durationMs': 600,
+                  'color': 'FFFFFF',
+                  'blend': true,
+                },
+                {
+                  'durationMs': 400,
+                  'color': '000000',
+                  'blend': true,
+                },
+              ],
+            },
+          ],
+          'triggerEvent': 'none',
+          'triggerEventTimeMs': 0,
+        },
+      };
+
+      handlerInput.responseBuilder.addDirective(buttonIdleDirective);
+    }
+  },
   addLaunchAnimation: function(handlerInput) {
     if (module.exports.supportButtons(handlerInput)) {
       // Flash the buttons white during roll call
@@ -276,3 +311,15 @@ module.exports = {
     }
   },
 };
+
+function getActiveButtons(handlerInput) {
+  const attributes = handlerInput.attributesManager.getSessionAttributes();
+  const game = attributes[attributes.currentGame];
+  const buttonIds = [];
+
+  game.players.forEach((player) => {
+    buttonIds.push(player.buttonId);
+  });
+
+  return buttonIds;
+}

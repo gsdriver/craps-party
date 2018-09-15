@@ -41,8 +41,7 @@ module.exports = {
       }
     }
 
-    return ((attributes.temp.bettingPlayer !== undefined)
-      && (request.type === 'IntentRequest')
+    return ((request.type === 'IntentRequest')
       && ((request.intent.name === 'RollIntent') ||
         (request.intent.name === 'AMAZON.YesIntent')));
   },
@@ -58,6 +57,12 @@ module.exports = {
     let switchState;
     let playerNumber;
     let newShooter;
+    let speechTime = 0;
+    let text;
+
+    if (attributes.temp.bettingPlayer === undefined) {
+      utils.startGame(handlerInput);
+    }
 
     // First, place bets for anyone who hasn't made a bet
     attributes.temp.roundOver = undefined;
@@ -80,7 +85,9 @@ module.exports = {
     });
 
     if (missingBets) {
-      speech += res.getString('ROLL_MISSING_BETS').replace('{0}', game.minBet);
+      text = res.getString('ROLL_MISSING_BETS').replace('{0}', game.minBet);
+      speech += text;
+      speechTime += estimateSpeechTime(text);
     }
 
     // Pick two random dice rolls
@@ -99,6 +106,7 @@ module.exports = {
     const total = game.dice[0] + game.dice[1];
 
     speech += '<audio src=\"https://s3-us-west-2.amazonaws.com/alexasoundclips/dice.mp3\"/> ';
+    speechTime += 900;
 
     // Let's see if the dice fell off the table
     let offTable;
@@ -110,11 +118,16 @@ module.exports = {
       }
     }
     if (offTable) {
-      speech += res.getString('ROLL_OFF_TABLE');
+      text = res.getString('ROLL_OFF_TABLE');
+      speech += text;
+      speechTime += estimateSpeechTime(text);
       speech += '<audio src=\"https://s3-us-west-2.amazonaws.com/alexasoundclips/dice.mp3\"/> ';
+      speechTime += 900;
     }
 
-    speech += res.getString('ROLL_RESULT').replace('{0}', res.sayRoll(game.dice));
+    text = res.getString('ROLL_RESULT').replace('{0}', res.sayRoll(game.dice));
+    speech += text;
+    speechTime += estimateSpeechTime(text);
 
     // Figure out payouts for each player
     playerNumber = 1;
@@ -181,7 +194,7 @@ module.exports = {
         attributes.temp.roundOver = true;
         game.rounds = (game.rounds + 1) || 1;
         if (total === 7) {
-          newShooter = true;
+          newShooter = (game.players.length > 1);
           speech += res.getString('ROLL_SEVEN_CRAPS');
         } else {
           speech += res.getString('ROLL_GOT_POINT');
@@ -232,6 +245,9 @@ module.exports = {
       return keepPlayer;
     });
 
+    // Now for the buttons
+    // First flash during the speech (estimate based on length of string)
+    buttons.flashLights(handlerInput, speechTime);
     if (game.players.length === 0) {
       speech += res.getString('ROLL_ALLPLAYERS_OUT');
       return handlerInput.responseBuilder
@@ -243,8 +259,15 @@ module.exports = {
       if (newShooter) {
         game.shooter = (game.shooter + 1) % game.players.length;
         speech += res.getString('ROLL_NEW_SHOOTER').replace('{0}', game.shooter + 1);
+
+        // Color this button to indicate a new shooter
+        buttons.turnOffButtons(handlerInput);
+        buttons.lightPlayer(handlerInput,
+          game.players[game.shooter].buttonId,
+          buttons.getPlayerColor(game.shooter));
       }
       attributes.temp.bettingPlayer = game.shooter;
+      buttons.startInputHandler(handlerInput);
 
       // And reprompt
       speech += reprompt;
@@ -255,3 +278,7 @@ module.exports = {
       }
   },
 };
+
+function estimateSpeechTime(speech) {
+  return 70 * speech.length;
+}
