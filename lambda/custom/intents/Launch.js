@@ -18,8 +18,10 @@ module.exports = {
     // Try to keep it simple
     if (buttons.supportButtons(handlerInput)) {
       attributes.temp.addingPlayers = true;
+      let speech = '<audio src=\"https://s3-us-west-2.amazonaws.com/alexasoundclips/casinowelcome.mp3\"/> ';
+      speech += res.getString('LAUNCH_WELCOME_BUTTON').replace('{0}', res.getString('SKILL_NAME'));
       return handlerInput.responseBuilder
-        .speak(res.getString('LAUNCH_WELCOME_BUTTON').replace('{0}', res.getString('SKILL_NAME')))
+        .speak(speech)
         .reprompt(res.getString('LAUNCH_REPROMPT'))
         .getResponse();
     } else {
