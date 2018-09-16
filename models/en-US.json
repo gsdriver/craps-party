@@ -1,7 +1,7 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "craps party",
+      "invocationName": "party craps",
       "intents": [
         {
           "name": "PassBetIntent",

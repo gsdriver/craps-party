@@ -153,7 +153,7 @@ function runGame(event, context, callback) {
     .addResponseInterceptors(saveResponseInterceptor)
     .withTableName('CrapsParty')
     .withAutoCreateTable(true)
-    .withSkillId('amzn1.ask.skill.eecdf80e-72f4-4331-938f-f33c9e7f523e')
+    .withSkillId('amzn1.ask.skill.8b5f337f-0c1f-483a-b282-843c76487e7e')
     .lambda();
   skillFunction(event, context, (err, response) => {
     callback(err, response);

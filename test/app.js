@@ -8,7 +8,7 @@ const dynamodb = new AWS.DynamoDB({apiVersion: '2012-08-10'});
 const fs = require('fs');
 
 const LOCALE='en-GB';
-const APPID = 'amzn1.ask.skill.eecdf80e-72f4-4331-938f-f33c9e7f523e';
+const APPID = 'amzn1.ask.skill.8b5f337f-0c1f-483a-b282-843c76487e7e';
 
 function BuildEvent(argv)
 {
