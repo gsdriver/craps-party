@@ -27,7 +27,7 @@ module.exports = {
       if (game && game.dice && (game.dice.length == 2)) {
         imageURL += ('craps' + game.dice[0] + game.dice[1] + '.png');
       } else {
-        imageURL += 'craps.png';
+        imageURL += 'crapstable.png';
       }
 
       const image = new Alexa.ImageHelper()
@@ -50,8 +50,15 @@ module.exports = {
     const game = attributes[attributes.currentGame];
 
     attributes.temp.addingPlayers = undefined;
+    game.startingPlayerCount = game.players.length;
     game.shooter = 0;
     buttons.startInputHandler(handlerInput);
+
+    // At start of game, turn off buttons
+    buttons.turnOffButtons(handlerInput);
+    game.players.forEach((player) => {
+      buttons.lightPlayer(handlerInput, player.buttonId, player.buttonColor);
+    });
   },
   createLineBet: function(amount, pass) {
     let bet;
@@ -106,5 +113,16 @@ module.exports = {
     }
 
     return baseBet;
+  },
+  playerName: function(handlerInput, playerNumber) {
+    const attributes = handlerInput.attributesManager.getSessionAttributes();
+    const game = attributes[attributes.currentGame];
+    const res = require('./resources')(handlerInput);
+
+    if (game.players.length === 1) {
+      return res.getString('SOLO_PLAYER');
+    } else {
+      return res.getString('PLAYER_NUMBER').replace('{0}', playerNumber);
+    }
   },
 };

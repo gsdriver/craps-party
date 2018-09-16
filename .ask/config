@@ -21,10 +21,10 @@
         },
         "interactionModel": {
           "en-GB": {
-            "eTag": "af693101c02d06c6d010aad3cba58b42"
+            "eTag": "0d5d8b6b76428cb36ff4b0269c1d5a0f"
           },
           "en-US": {
-            "eTag": "dcc831319d2a8c7d77a07336e2af5880"
+            "eTag": "5705e9bc5cd2793cb79ae845c3406d27"
           }
         },
         "lambda": [
@@ -35,7 +35,7 @@
             "alexaUsage": [
               "custom/default"
             ],
-            "revisionId": "f9c8a644-4d94-4ef7-bda9-3a8885eec03a"
+            "revisionId": "f2bcd706-6855-43b9-b3f0-a34b42fa02bd"
           }
         ]
       }

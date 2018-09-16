@@ -5,6 +5,7 @@
 'use strict';
 
 const speechUtils = require('alexa-speech-utils')();
+const utils = require('../utils');
 
 module.exports = {
   canHandle: function(handlerInput) {
@@ -20,7 +21,7 @@ module.exports = {
     let speech = '';
     let i;
 
-    if (game.rolls) {
+    if (attributes.temp.rolled) {
       if (game.point) {
         speech += res.getString('READ_POINT').replace('{0}', game.point);
       }
@@ -31,7 +32,7 @@ module.exports = {
           betNames.push(res.sayBet(bet));
         });
 
-        speech += res.getString('ROLL_PLAYER_NUMBER').replace('{0}', i + 1);
+        speech += utils.playerName(handlerInput, i + 1) + ' ';
         speech += res.getString('READ_BANKROLL').replace('{0}', game.players[i].bankroll);
 
         if (betNames.length) {

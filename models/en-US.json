@@ -226,10 +226,25 @@
           "name": "RollIntent",
           "samples": [
             "let's play",
+            "let's roll",
             "shoot",
             "roll",
             "shoot the dice",
-            "roll the dice"
+            "roll the dice",
+            "shake those bones"
+          ]
+        },
+        {
+          "name": "StartIntent",
+          "samples": [
+            "let's start the game",
+            "Let's get started",
+            "start",
+            "start the game",
+            "start game",
+            "get started",
+            "let's get going",
+            "let's go"
           ]
         }
       ]

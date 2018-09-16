@@ -43,6 +43,7 @@ module.exports = {
 
     return ((request.type === 'IntentRequest')
       && ((request.intent.name === 'RollIntent') ||
+        (request.intent.name === 'StartIntent') ||
         (request.intent.name === 'AMAZON.YesIntent')));
   },
   handle: function(handlerInput) {
@@ -53,39 +54,45 @@ module.exports = {
     let speech = '';
     let reprompt = res.getString('ROLL_REPROMPT');
     let amount;
-    let missingBets;
+    let missingBets = 0;
     let switchState;
     let playerNumber;
     let newShooter;
     let speechTime = 0;
     let text;
+    let linebet;
 
-    if (attributes.temp.bettingPlayer === undefined) {
+    if (!attributes.temp.rolled) {
       utils.startGame(handlerInput);
+      attributes.temp.rolled = true;
     }
+    attributes.temp.bettingPlayer = undefined;
 
     // First, place bets for anyone who hasn't made a bet
     attributes.temp.roundOver = undefined;
     game.players.forEach((player) => {
-      if (!utils.getLineBet(player.bets)) {
+      if (!utils.getLineBet(player.bets) && (player.bankroll >= game.minBet)) {
         // If there is a line bet amount, use that
         if (player.lineBet) {
           amount = (player.lineBet > player.bankroll) ? player.bankroll : player.lineBet;
         } else {
           // OK, just place a bet for them - acknowledge that we're doing this
-          missingBets = true;
+          missingBets++;
           amount = game.minBet;
           player.lineBet = game.minBet;
           player.passPlayer = true;
         }
 
-        player.bets.push(utils.createLineBet(amount, player.passPlayer));
+        linebet = utils.createLineBet(amount, player.passPlayer);
+        linebet.point = game.point;
+        player.bets.push(linebet);
         player.bankroll -= amount;
       }
     });
 
     if (missingBets) {
-      text = res.getString('ROLL_MISSING_BETS').replace('{0}', game.minBet);
+      const format = (missingBets === 1) ? res.getString('ROLL_ONE_MISSING') : res.getString('ROLL_MISSING_BETS');
+      text = format.replace('{0}', game.minBet);
       speech += text;
       speechTime += estimateSpeechTime(text);
     }
@@ -157,7 +164,7 @@ module.exports = {
       // Don't say anything if no bets won or lost
       player.amountWon = (won - lost);
       if ((won > 0) || (lost > 0)) {
-        speech += res.getString('ROLL_PLAYER_NUMBER').replace('{0}', playerNumber);
+        speech += utils.playerName(handlerInput, playerNumber);
         if (won > lost) {
           speech += res.getString('ROLL_NET_WIN').replace('{0}', won - lost);
         } else if (lost > won) {
@@ -181,10 +188,13 @@ module.exports = {
         speech += res.getString('ROLL_POINT_ESTABLISHED');
         if (!attributes.prompts.takeOdds) {
           attributes.prompts.takeOdds = true;
-          speech += res.getString('ROLL_TAKE_ODDS');
+          speech += res.getString('ROLL_TAKE_ODDS').replace('{0}', game.maxOdds);
         }
         game.players.forEach((player) => {
-          utils.getLineBet(player.bets).point = total;
+          linebet = utils.getLineBet(player.bets);
+          if (linebet) {
+            linebet.point = total;
+          }
         });
       }
     } else {
@@ -194,6 +204,7 @@ module.exports = {
         switchState = true;
         attributes.temp.roundOver = true;
         game.rounds = (game.rounds + 1) || 1;
+        attributes.temp.sessionRounds = (attributes.temp.sessionRounds + 1) || 1;
         if (total === 7) {
           newShooter = (game.players.length > 1);
           speech += res.getString('ROLL_SEVEN_CRAPS');
@@ -213,7 +224,7 @@ module.exports = {
             bet.winningRolls = {};
             bet.winningRolls[game.point] = 1;
             bet.losingRolls = [7];
-          } else if ((bet.type === 'DontPassBet') && !game.point) {
+          } else if ((bet.type === 'DontPassBet') && game.point) {
             bet.winningRolls = {7: 1};
             bet.losingRolls = [game.point];
           }
@@ -247,7 +258,7 @@ module.exports = {
     });
 
     if (game.players.length === 0) {
-      speech += res.getString('ROLL_ALLPLAYERS_OUT');
+      speech += res.getString('ROLL_ALLPLAYERS_OUT').replace('{0}', res.getString('SKILL_NAME'));
       return handlerInput.responseBuilder
         .speak(speech)
         .withShouldEndSession(true)
@@ -256,9 +267,9 @@ module.exports = {
       // Go to the next shooter if they crapped out
       if (newShooter) {
         game.shooter = (game.shooter + 1) % game.players.length;
-        speech += res.getString('ROLL_NEW_SHOOTER').replace('{0}', game.shooter + 1);
+        speech += res.getString('ROLL_NEW_SHOOTER')
+          .replace('{0}', utils.playerName(handlerInput, game.shooter + 1));
       }
-      attributes.temp.bettingPlayer = game.shooter;
       buttons.startInputHandler(handlerInput);
 
       // Now do an animation sequence for each player

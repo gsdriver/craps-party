@@ -18,6 +18,7 @@ function BuildEvent(argv)
   var odds = {'name': 'OddsBetIntent', 'slots': {'Amount': {'name': 'Amount', 'value': ''}}};
   var field = {'name': 'FieldBetIntent', 'slots': {'Amount': {'name': 'Amount', 'value': ''}}};
   var roll = {'name': 'RollIntent', 'slots': {}};
+  var start = {'name': 'StartIntent', 'slots': {}};
   var remove = {'name': 'RemoveIntent', 'slots': {}};
   var yes = {'name': 'AMAZON.YesIntent', 'slots': {}};
   var no = {'name': 'AMAZON.NoIntent', 'slots': {}};
@@ -229,6 +230,8 @@ function BuildEvent(argv)
     }
   } else if (argv[2] == 'roll') {
     lambda.request.intent = roll;
+  } else if (argv[2] == 'start') {
+    lambda.request.intent = start;
   } else if (argv[2] == 'remove') {
     lambda.request.intent = remove;
   } else if (argv[2] == 'repeat') {

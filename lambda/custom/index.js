@@ -37,15 +37,19 @@ const requestInterceptor = {
             if (!attributes.currentGame) {
               attributes.currentGame = 'standard';
               attributes.prompts = {};
+              attributes.standard = {
+                minBet: 5,
+                maxOdds: 10,
+                startingBankroll: 1000,
+                players: [],
+              };
+            } else {
+              // Reset the players
+              attributes.standard.players = [];
+              attributes.standard.dice = undefined;
+              attributes.standard.point = undefined;
+              attributes.standard.shooter = undefined;
             }
-
-            // Note that we always reset the game
-            attributes.standard = {
-              minBet: 5,
-              maxOdds: 10,
-              startingBankroll: 1000,
-              players: [],
-            };
 
             // Since there were no session attributes, this is the first
             // round of the session - set the temp attributes

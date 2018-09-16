@@ -195,7 +195,7 @@ function getBet(event, attributes) {
     amount = parseInt(amountSlot.value);
   } else if (player.lineBet && (event.request.intent.name === 'OddsBetIntent')) {
     amount = player.lineBet * game.maxOdds;
-  } else if (player.bets) {
+  } else if (player.bets && player.bets.length) {
     amount = player.bets[player.bets.length - 1].amount;
   } else {
     amount = game.minBet;

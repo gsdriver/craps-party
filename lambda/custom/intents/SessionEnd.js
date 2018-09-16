@@ -20,12 +20,12 @@ module.exports = {
       const event = handlerInput.requestEnvelope;
       const game = attributes[attributes.currentGame];
 
-      if (game.players && (game.players.length > 0) && !process.env.NOSAVETABLE) {
+      if (game.startingPlayerCount && !process.env.NOSAVETABLE) {
         // Save the table to S3 - OK if this fails
         const data = {
           userId: event.session.user.userId,
-          tableSize: game.players.length,
-          rounds: game.rounds,
+          tableSize: game.startingPlayerCount,
+          rounds: attributes.temp.sessionRounds,
         };
         s3.putObject({Body: JSON.stringify(data),
              Bucket: 'garrett-alexa-usage',

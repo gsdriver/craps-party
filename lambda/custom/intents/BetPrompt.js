@@ -30,6 +30,15 @@ module.exports = {
           }
         }
 
+        // If you are the shooter and we aren't adding players
+        // and you don't have enough money to place a new bet anyways
+        // then we won't process this and let it fall to roll
+        if (existingPlayer && !attributes.temp.addingPlayers
+          && (attributes.temp.bettingPlayer === game.shooter)
+          && (game.players[attributes.temp.bettingPlayer].bankroll < game.minBet)) {
+          return false;
+        }
+
         // We handle if an existing player pressed the button
         // unless it was the shooter who has pressed it twice
         if (existingPlayer &&
@@ -39,7 +48,8 @@ module.exports = {
       }
     }
 
-    return false;
+    return ((game.players.length > 0) && attributes.temp.addingPlayers &&
+      (request.type === 'IntentRequest') && (request.intent.name === 'StartIntent'));
   },
   handle: function(handlerInput) {
     const attributes = handlerInput.attributesManager.getSessionAttributes();
@@ -48,14 +58,21 @@ module.exports = {
     let speech = '';
     let reprompt;
 
-    buttons.turnOffButtons(handlerInput);
-    game.timestamp = Date.now();
+    // If this player has no money left they can't place a bet
     if (attributes.temp.addingPlayers) {
-      speech += res.getString('BETPROMPT_STARTING').replace('{0}', game.players.length);
+      if (game.players.length === 1) {
+        speech += res.getString('BETPROMPT_STARTING_SOLO');
+      } else {
+        speech += res.getString('BETPROMPT_STARTING').replace('{0}', game.players.length);
+      }
       utils.startGame(handlerInput);
       attributes.temp.bettingPlayer = undefined;
+    } else if (game.players[attributes.temp.bettingPlayer].bankroll < game.minBet) {
+      speech += res.getString('BETPROMPT_NOTENOUGH');
+      reprompt = res.getString('BETPROMPT_NOTENOUGH_REPROMPT');
     } else {
       // Color this player's button
+      buttons.turnOffButtons(handlerInput);
       buttons.lightPlayer(handlerInput,
         game.players[attributes.temp.bettingPlayer].buttonId,
         game.players[attributes.temp.bettingPlayer].buttonColor);
@@ -64,9 +81,10 @@ module.exports = {
         speech += res.getString('BETPROMPT_SHOOTER');
         reprompt = res.getString('BETPROMPT_SHOOTER_REPROMPT');
       } else {
-        speech += res.getString('BETPROMPT_PLACEBET').replace('{0}', attributes.temp.bettingPlayer + 1);
+        speech += res.getString('BETPROMPT_PLACEBET')
+            .replace('{0}', utils.playerName(handlerInput, attributes.temp.bettingPlayer + 1));
         reprompt = res.getString('BETPROMPT_PLACEBET_REPROMPT')
-            .replace('{0}', attributes.temp.bettingPlayer + 1);
+            .replace('{0}', utils.playerName(handlerInput, attributes.temp.bettingPlayer + 1));
       }
     }
 

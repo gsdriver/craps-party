@@ -43,7 +43,6 @@ module.exports = {
     let reprompt;
     const buttonColor = buttons.getPlayerColor(game.players.length);
 
-    game.timestamp = Date.now();
     buttons.lightPlayer(handlerInput, attributes.temp.buttonId, buttonColor);
     game.players.push({
       buttonId: attributes.temp.buttonId,
@@ -59,7 +58,7 @@ module.exports = {
       reprompt = res.getString('ADDPLAYER_NEWPLAYER_REPROMPT');
     } else if (game.players.length < 4) {
       speech += res.getString('ADDPLAYER_NEWPLAYER')
-        .replace('{0}', game.players.length);
+        .replace('{0}', utils.playerName(handlerInput, game.players.length));
       reprompt = res.getString('ADDPLAYER_NEWPLAYER_REPROMPT');
     } else {
       speech += res.getString('ADDPLAYER_MAXPLAYERS');

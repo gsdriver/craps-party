@@ -38,29 +38,42 @@ module.exports = {
   },
   startInputHandler: function(handlerInput) {
     if (module.exports.supportButtons(handlerInput)) {
-      // We'll allow them to press the button again
-      const inputDirective = {
-        'type': 'GameEngine.StartInputHandler',
-        'timeout': 30000,
-        'recognizers': {
-          'button_down_recognizer': {
-            'type': 'match',
-            'fuzzy': false,
-            'anchor': 'end',
-            'pattern': [{
-              'action': 'down',
-            }],
+      // We'll allow them to press the button again if we haven't already
+      const response = handlerInput.responseBuilder.getResponse();
+      let ignore;
+
+      if (response.directives) {
+        response.directives.forEach((directive) => {
+          if (directive.type === 'GameEngine.StartInputHandler') {
+            ignore = true;
+          }
+        });
+      }
+
+      if (!ignore) {
+        const inputDirective = {
+          'type': 'GameEngine.StartInputHandler',
+          'timeout': 30000,
+          'recognizers': {
+            'button_down_recognizer': {
+              'type': 'match',
+              'fuzzy': false,
+              'anchor': 'end',
+              'pattern': [{
+                'action': 'down',
+              }],
+            },
           },
-        },
-        'events': {
-          'button_down_event': {
-            'meets': ['button_down_recognizer'],
-            'reports': 'matches',
-            'shouldEndInputHandler': false,
+          'events': {
+            'button_down_event': {
+              'meets': ['button_down_recognizer'],
+              'reports': 'matches',
+              'shouldEndInputHandler': false,
+            },
           },
-        },
-      };
-      handlerInput.responseBuilder.addDirective(inputDirective);
+        };
+        handlerInput.responseBuilder.addDirective(inputDirective);
+      }
     }
   },
   rollCallInputHandler: function(handlerInput) {

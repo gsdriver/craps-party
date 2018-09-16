@@ -12,7 +12,7 @@ module.exports = {
     const universalIntents = ['AMAZON.RepeatIntent', 'AMAZON.FallbackIntent',
       'AMAZON.HelpIntent', 'AMAZON.YesIntent', 'AMAZON.NoIntent', 'AMAZON.StopIntent',
       'AMAZON.CancelIntent', 'PassBetIntent', 'DontPassBetIntent', 'OddsBetIntent', 'FieldBetIntent',
-      'RemoveBetIntent', 'RollIntent'];
+      'RemoveBetIntent', 'RollIntent', 'StartIntent'];
 
     // Default to a negative response
     const response = {
