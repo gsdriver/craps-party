@@ -27,6 +27,7 @@ module.exports = {
 
         if (!existingPlayer) {
           // New button pressed!
+          attributes.usedButton = true;
           attributes.temp.buttonId = buttonId;
           return true;
         }

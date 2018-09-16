@@ -215,9 +215,12 @@ function pickRandomOption(handlerInput, res) {
   const event = handlerInput.requestEnvelope;
   const attributes = handlerInput.attributesManager.getSessionAttributes();
 
-  attributes.temp.stringCount = (attributes.temp.stringCount + 1) || 1;
   const options = res.split('|');
-  let seed = event.session.user.userId + attributes.temp.stringCount;
+  let seed = event.session.user.userId;
+  if (attributes.temp) {
+    attributes.temp.stringCount = (attributes.temp.stringCount + 1) || 1;
+    seed += attributes.temp.stringCount;
+  }
   if (attributes.currentGame && attributes[attributes.currentGame]
     && attributes[attributes.currentGame].timestamp) {
     seed += attributes[attributes.currentGame].timestamp;

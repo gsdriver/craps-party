@@ -108,6 +108,11 @@ module.exports = {
     if (die2 == 7) {
       die2--;
     }
+    // Hack until we figure out what's wrong with the 42 image
+    if ((die1 === 4) && (die2 === 2)) {
+      die1 = 2;
+      die1 = 4;
+    }
     game.dice = [die1, die2];
     game.rolls = (game.rolls + 1) || 1;
     const total = game.dice[0] + game.dice[1];

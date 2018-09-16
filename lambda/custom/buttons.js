@@ -53,7 +53,7 @@ module.exports = {
       if (!ignore) {
         const inputDirective = {
           'type': 'GameEngine.StartInputHandler',
-          'timeout': 30000,
+          'timeout': 60000,
           'recognizers': {
             'button_down_recognizer': {
               'type': 'match',
