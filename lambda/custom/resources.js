@@ -51,7 +51,7 @@ const common = {
   'READ_BETS': 'You bet {0}. ',
   'READ_POINT': 'The point is {0}. ',
   // Roll.js
-  'ROLL_RESULT': 'Shooter got {0} <break time=\'300ms\'/> |The shooter rolled {0} <break time=\'300ms\'/> |{0} <break time=\'300ms\'/> ',
+  'ROLL_RESULT': 'Shooter got {0} <break time=\'300ms\'/> |The shooter rolled {0} <break time=\'300ms\'/> |{0} <break time=\'300ms\'/> |The dice came up {0} <break time=\'300ms\'/> |It\'s {0} <break time=\'300ms\'/> ',
   'ROLL_BUSTED': 'Player {0} lost all their money. Resetting their bankroll and clearing their bets. ',
   'ROLL_BUSTED_PLAYEROUT': 'Player {0} lost all their money. You\'re outta here! ',
   'ROLL_NET_PUSH': ' You broke even. ',

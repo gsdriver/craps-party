@@ -10,8 +10,10 @@ module.exports = {
   canHandle: function(handlerInput) {
     const request = handlerInput.requestEnvelope.request;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
+    const game = attributes[attributes.currentGame];
 
-    return ((attributes.temp.bettingPlayer !== undefined)
+    return (((attributes.temp.bettingPlayer !== undefined)
+        || (game.players.length === 1))
       && (request.type === 'IntentRequest')
       && ((request.intent.name === 'PassBetIntent')
         || (request.intent.name === 'DontPassBetIntent')
@@ -22,7 +24,6 @@ module.exports = {
     const event = handlerInput.requestEnvelope;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
-    const player = game.players[attributes.temp.bettingPlayer];
     const res = require('../resources')(handlerInput);
     const validBets = {
       'POINT': ['OddsBetIntent', 'FieldBetIntent'],
@@ -33,6 +34,11 @@ module.exports = {
     let speech = '';
     let bet = {};
     let baseBet;
+
+    if (attributes.temp.bettingPlayer === undefined) {
+      attributes.temp.bettingPlayer = 0;
+    }
+    const player = game.players[attributes.temp.bettingPlayer];
 
     // Make sure this is a valid bet for the state
     if (game.point) {
