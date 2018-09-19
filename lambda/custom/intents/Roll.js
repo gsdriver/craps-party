@@ -193,7 +193,9 @@ module.exports = {
         speech += res.getString('ROLL_POINT_ESTABLISHED');
         if (!attributes.prompts.takeOdds) {
           attributes.prompts.takeOdds = true;
-          speech += res.getString('ROLL_TAKE_ODDS').replace('{0}', game.maxOdds);
+          text = res.getString('ROLL_TAKE_ODDS').replace('{0}', game.maxOdds);
+          speech += text;
+          speechTime += estimateSpeechTime(text);
         }
         game.players.forEach((player) => {
           linebet = utils.getLineBet(player.bets);

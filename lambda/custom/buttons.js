@@ -53,7 +53,7 @@ module.exports = {
       if (!ignore) {
         const inputDirective = {
           'type': 'GameEngine.StartInputHandler',
-          'timeout': 60000,
+          'timeout': 90000,
           'recognizers': {
             'button_down_recognizer': {
               'type': 'match',
@@ -80,7 +80,7 @@ module.exports = {
     if (module.exports.supportButtons(handlerInput)) {
       const inputDirective = {
         'type': 'GameEngine.StartInputHandler',
-        'timeout': 30000,
+        'timeout': 40000,
         'recognizers': {
           'button_down_recognizer': {
             'type': 'match',
@@ -204,9 +204,9 @@ module.exports = {
       };
 
       // Add to the animations array
-      // This ends up finishing in about 30 seconds
-      const sequence = [1500, 1500, 1500, 1500,
-        900, 900, 900, 900, 900, 900, 900,
+      // This ends up finishing in about 40 seconds
+      const sequence = [2500, 2500, 2500, 2500, 2500,
+        1200, 1200, 1200, 1200, 1200, 1200,
         600, 600, 600, 600,
         300, 300, 300, 300];
       sequence.forEach((time) => {
@@ -269,7 +269,7 @@ module.exports = {
       } else {
         winColor = 'FFFFFF';
       }
-      for (i = 0; i < 3; i++) {
+      for (i = 0; i < 4; i++) {
         buttonDirective.parameters.animations[0].sequence.push({
           'durationMs': 600,
           'color': winColor,

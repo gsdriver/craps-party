@@ -43,6 +43,9 @@ const common = {
   'LAUNCH_WELCOME_BUTTON': 'Welcome to the fast action game of {0}.  Could the first person get us started by pressing an Echo Button?|Ready for some fun? Let\'s play {0}! Player one, press an Echo Button.|Would the first player press an Echo Button to get us started with the fast action game of {0}?',
   'LAUNCH_NEED_BUTTONS': 'Sorry to play {0} you must have Echo Buttons.',
   'LAUNCH_REPROMPT': 'Would you like to play? ',
+  'LAUNCH_GOOD_MORNING': 'Good morning <break time=\"200ms\"/> ',
+  'LAUNCH_GOOD_AFTERNOON': 'Good afternoon <break time=\"200ms\"/> ',
+  'LAUNCH_GOOD_EVENING': 'Good evening <break time=\"200ms\"/> ',
   // Remove.js
   'REMOVE_REPROMPT': 'What else can I help you with?',
   'REMOVE_CANTREMOVE_PASSBET': 'Sorry, you can\'t remove a line bet once a point has been established. ',

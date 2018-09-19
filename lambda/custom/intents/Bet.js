@@ -180,6 +180,9 @@ module.exports = {
       speechError += (' ' + reprompt);
     }
 
+    // Speed up the speech (not the errors though)
+    speech = '<prosody rate="fast">' + speech + '</prosody>';
+
     return handlerInput.responseBuilder
       .speak((speechError) ? speechError : speech)
       .reprompt(reprompt)

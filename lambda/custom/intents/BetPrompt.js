@@ -70,6 +70,8 @@ module.exports = {
     } else if (game.players[attributes.temp.bettingPlayer].bankroll < game.minBet) {
       speech += res.getString('BETPROMPT_NOTENOUGH');
       reprompt = res.getString('BETPROMPT_NOTENOUGH_REPROMPT');
+      // Speed this up
+      speech = '<prosody rate="fast">' + speech + '</prosody>';
     } else {
       // Color this player's button
       buttons.turnOffButtons(handlerInput);
@@ -86,6 +88,8 @@ module.exports = {
         reprompt = res.getString('BETPROMPT_PLACEBET_REPROMPT')
             .replace('{0}', utils.playerName(handlerInput, attributes.temp.bettingPlayer + 1));
       }
+      // Speed this up
+      speech = '<prosody rate="fast">' + speech + '</prosody>';
     }
 
     return handlerInput.responseBuilder
