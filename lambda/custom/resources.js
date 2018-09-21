@@ -79,11 +79,11 @@ const common = {
 
 const dollar = {
   // From Bet.js
-  'BET_EXCEEDS_ODDS': 'Sorry, this bet exceeds {0} times odds based on your line bet of ${1}.',
-  'PASSBET_PLACED': '${0} pass bet placed.',
-  'DONTPASSBET_PLACED': '${0} don\'t pass bet placed.',
-  'ODDS_BET_PLACED': '${0} odds placed.',
-  'FIELD_BET_PLACED': '${0} field bet placed.',
+  'BET_EXCEEDS_ODDS': 'Sorry, this bet exceeds {0} times odds based on your line bet of ${1}. ',
+  'PASSBET_PLACED': '${0} pass bet placed. ',
+  'DONTPASSBET_PLACED': '${0} don\'t pass bet placed. ',
+  'ODDS_BET_PLACED': '${0} odds placed. ',
+  'FIELD_BET_PLACED': '${0} field bet placed. ',
   'BET_DUPLICATE_NOT_ADDED': 'You already placed ${0} on this bet, and another ${1} would exceed the maximum bet of ${2}. ',
   // From Repeat.js
   'READ_BANKROLL': 'You have ${0}. ',
@@ -105,11 +105,11 @@ const dollar = {
 
 const pound = {
   // From Bet.js
-  'BET_EXCEEDS_ODDS': 'Sorry, this bet exceeds {0} times odds based on your line bet of £{1}.',
-  'PASSBET_PLACED': '£{0} pass bet placed.',
-  'DONTPASSBET_PLACED': '£{0} don\'t pass bet placed.',
-  'ODDS_BET_PLACED': '£{0} odds placed.',
-  'FIELD_BET_PLACED': '£{0} field bet placed.',
+  'BET_EXCEEDS_ODDS': 'Sorry, this bet exceeds {0} times odds based on your line bet of £{1}. ',
+  'PASSBET_PLACED': '£{0} pass bet placed. ',
+  'DONTPASSBET_PLACED': '£{0} don\'t pass bet placed. ',
+  'ODDS_BET_PLACED': '£{0} odds placed. ',
+  'FIELD_BET_PLACED': '£{0} field bet placed. ',
   'BET_DUPLICATE_NOT_ADDED': 'You already placed £{0} on this bet, and another £{1} would exceed the maximum bet of £{2}. ',
   // From Repeat.js
   'READ_BANKROLL': 'You have £{0}. ',

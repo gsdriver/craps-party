@@ -51,6 +51,9 @@ const requestInterceptor = {
               attributes.standard.shooter = undefined;
             }
 
+            // Temporary
+            attributes.prompts = {};
+
             // Since there were no session attributes, this is the first
             // round of the session - set the temp attributes
             attributesManager.setSessionAttributes(attributes);

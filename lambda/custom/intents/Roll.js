@@ -100,8 +100,8 @@ module.exports = {
     // Pick two random dice rolls
     const randomValue1 = seedrandom('1' + event.session.user.userId + (game.timestamp ? game.timestamp : ''))();
     const randomValue2 = seedrandom('2' + event.session.user.userId + (game.timestamp ? game.timestamp : ''))();
-    const die1 = Math.floor(randomValue1 * 6) + 1;
-    const die2 = Math.floor(randomValue2 * 6) + 1;
+    let die1 = Math.floor(randomValue1 * 6) + 1;
+    let die2 = Math.floor(randomValue2 * 6) + 1;
     if (die1 == 7) {
       die1--;
     }
