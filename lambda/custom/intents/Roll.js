@@ -5,40 +5,18 @@
 'use strict';
 
 const utils = require('../utils');
-const buttons = require('../buttons');
 const seedrandom = require('seedrandom');
 
 module.exports = {
   canHandle: function(handlerInput) {
-    // You can do this via voice or if the shooter presses the button twice
     const request = handlerInput.requestEnvelope.request;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
 
     // If no players, can't roll
+    // Make sure all players are added - and check for the personId
     if (!game.players || (game.players.length === 0)) {
       return false;
-    }
-
-    // If the shooter has pressed the button previously, we will roll
-    if ((request.type === 'GameEngine.InputHandlerEvent') &&
-      (attributes.temp.bettingPlayer !== undefined) &&
-      (attributes.temp.bettingPlayer === game.shooter)) {
-      const buttonId = buttons.getPressedButton(request, attributes);
-      let playerId;
-      if (buttonId) {
-        let i;
-        for (i = 0; i < game.players.length; i++) {
-          if (game.players[i].buttonId === buttonId) {
-            playerId = i;
-          }
-        }
-
-        if (playerId === game.shooter) {
-          // Shooter pressed the button twice - roll 'em!
-          return true;
-        }
-      }
     }
 
     return ((request.type === 'IntentRequest')
@@ -276,13 +254,6 @@ module.exports = {
         game.shooter = (game.shooter + 1) % game.players.length;
         speech += res.getString('ROLL_NEW_SHOOTER')
           .replace('{0}', utils.playerName(handlerInput, game.shooter + 1));
-      }
-      buttons.startInputHandler(handlerInput);
-
-      // Now do an animation sequence for each player
-      let i;
-      for (i = 0; i < game.players.length; i++) {
-        buttons.addRollAnimation(handlerInput, speechTime, i);
       }
 
       // And reprompt

@@ -5,7 +5,6 @@
 'use strict';
 
 const Alexa = require('ask-sdk');
-const buttons = require('./buttons');
 
 module.exports = {
   drawTable: function(handlerInput) {
@@ -52,13 +51,6 @@ module.exports = {
     attributes.temp.addingPlayers = undefined;
     game.startingPlayerCount = game.players.length;
     game.shooter = 0;
-    buttons.startInputHandler(handlerInput);
-
-    // At start of game, turn off buttons
-    buttons.turnOffButtons(handlerInput);
-    game.players.forEach((player) => {
-      buttons.lightPlayer(handlerInput, player.buttonId, player.buttonColor);
-    });
   },
   createLineBet: function(amount, pass) {
     let bet;

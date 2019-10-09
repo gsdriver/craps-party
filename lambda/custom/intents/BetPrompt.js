@@ -4,7 +4,6 @@
 
 'use strict';
 
-const buttons = require('../buttons');
 const utils = require('../utils');
 
 module.exports = {
@@ -12,41 +11,6 @@ module.exports = {
     const request = handlerInput.requestEnvelope.request;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
-
-    // If this is a button we've seen before, we are now going to prompt for a bet
-    if (request.type === 'GameEngine.InputHandlerEvent') {
-      const buttonId = buttons.getPressedButton(request, attributes);
-      const lastPressShooter = (attributes.temp.bettingPlayer !== undefined) &&
-        ((attributes.temp.bettingPlayer === game.shooter));
-
-      if (buttonId) {
-        let existingPlayer;
-        let i;
-
-        for (i = 0; i < game.players.length; i++) {
-          if (game.players[i].buttonId === buttonId) {
-            attributes.temp.bettingPlayer = i;
-            existingPlayer = true;
-          }
-        }
-
-        // If you are the shooter and we aren't adding players
-        // and you don't have enough money to place a new bet anyways
-        // then we won't process this and let it fall to roll
-        if (existingPlayer && !attributes.temp.addingPlayers
-          && (attributes.temp.bettingPlayer === game.shooter)
-          && (game.players[attributes.temp.bettingPlayer].bankroll < game.minBet)) {
-          return false;
-        }
-
-        // We handle if an existing player pressed the button
-        // unless it was the shooter who has pressed it twice
-        if (existingPlayer &&
-          !(lastPressShooter && (attributes.temp.bettingPlayer === game.shooter))) {
-          return true;
-        }
-      }
-    }
 
     return ((game.players.length > 0) && attributes.temp.addingPlayers &&
       (request.type === 'IntentRequest') && (request.intent.name === 'StartIntent'));
@@ -73,12 +37,6 @@ module.exports = {
       // Speed this up
       speech = '<prosody rate="fast">' + speech + '</prosody>';
     } else {
-      // Color this player's button
-      buttons.turnOffButtons(handlerInput);
-      buttons.lightPlayer(handlerInput,
-        game.players[attributes.temp.bettingPlayer].buttonId,
-        game.players[attributes.temp.bettingPlayer].buttonColor);
-
       if (attributes.temp.bettingPlayer === game.shooter) {
         speech += res.getString('BETPROMPT_SHOOTER');
         reprompt = res.getString('BETPROMPT_SHOOTER_REPROMPT');

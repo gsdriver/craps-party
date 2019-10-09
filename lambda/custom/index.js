@@ -3,6 +3,7 @@
 const Alexa = require('ask-sdk');
 const CanFulfill = require('./intents/CanFulfill');
 const Launch = require('./intents/Launch');
+const PlayerCount = require('./intents/PlayerCount');
 const Remove = require('./intents/Remove');
 const Roll = require('./intents/Roll');
 const EndRollCall = require('./intents/EndRollCall');
@@ -12,10 +13,10 @@ const Help = require('./intents/Help');
 const Exit = require('./intents/Exit');
 const SessionEnd = require('./intents/SessionEnd');
 const AddPlayer = require('./intents/AddPlayer');
+const ConfirmName = require('./intents/ConfirmName');
 const Repeat = require('./intents/Repeat');
 const Unhandled = require('./intents/Unhandled');
 const utils = require('./utils');
-const buttons = require('./buttons');
 
 const requestInterceptor = {
   process(handlerInput) {
@@ -78,10 +79,6 @@ const saveResponseInterceptor = {
       if (response) {
         utils.drawTable(handlerInput);
         if (attributes.temp && attributes.temp.newSession) {
-          // Set up the buttons to all flash, welcoming the user to press a button
-          buttons.addLaunchAnimation(handlerInput);
-          buttons.buildButtonDownAnimationDirective(handlerInput, []);
-          buttons.rollCallInputHandler(handlerInput);
           attributes.temp.newSession = undefined;
         }
         if (response.shouldEndSession) {
@@ -139,7 +136,9 @@ function runGame(event, context, callback) {
 
   const skillFunction = skillBuilder.addRequestHandlers(
       Launch,
+      PlayerCount,
       AddPlayer,
+      ConfirmName,
       Exit,
       Help,
       Bet,

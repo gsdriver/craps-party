@@ -3,7 +3,7 @@
     "publishingInformation": {
       "locales": {
         "en-US": {
-          "summary": "Play a fast paced game of Craps with up to four players using Echo Buttons!",
+          "summary": "Play a fast paced game of Craps with up to four players!",
           "examplePhrases": [
             "Alexa, open party craps",
             "roll the dice"
@@ -15,11 +15,11 @@
           ],
           "name": "Party Craps - Multiplayer Edition",
           "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/ed85/72b8a01fb1074c6ea14d605645091f39/APP_ICON?versionId=ofRVi4ygwmd1ZBdJu9yFvxv88U1vHLOg&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=crhHW4MP4sdTSTi%2F6VRthzILMQ8%3D",
-          "description": "Play a fast paced game of Craps in this party edition of the popular casino game.  Up to 4 players can join in using Echo Buttons to jump in and yell out their bets! Each player starts with $1000 and you keep playing until the last player busts out! Think you can come away the winner? Enjoy this game or want to give us feedback? Connect with us on Facebook at https://www.facebook.com/alexacasinogames!",
+          "description": "Play a fast paced game of Craps in this party edition of the popular casino game.  Up to 4 players can join in and yell out their bets! Each player starts with $1000 and you keep playing until the last player busts out! Think you can come away the winner? Enjoy this game or want to give us feedback? Connect with us on Facebook at https://www.facebook.com/alexacasinogames!",
           "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/877a/af87d5ce6a414496811864316dae828b/APP_ICON_LARGE?versionId=gRYNTDdQAVoLdmNBOjv9E4HwxMKWNyWm&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=clHywRiv%2BfWU3ILiBPG4KOSvGmE%3D"
         },
         "en-GB": {
-          "summary": "Play a fast paced game of Dice with up to four players using Echo Buttons!",
+          "summary": "Play a fast paced game of Dice with up to four players!",
           "examplePhrases": [
             "Alexa, open party dice",
             "roll the dice"
@@ -31,26 +31,19 @@
           ],
           "name": "Party Dice - Multiplayer Edition",
           "smallIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/ed85/72b8a01fb1074c6ea14d605645091f39/APP_ICON?versionId=ofRVi4ygwmd1ZBdJu9yFvxv88U1vHLOg&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=crhHW4MP4sdTSTi%2F6VRthzILMQ8%3D",
-          "description": "Play a fast paced game of Dice in this party edition of the popular casino game.  Up to 4 players can join in using Echo Buttons to jump in and yell out their bets! Each player starts with £1000 and you keep playing until the last player busts out! Think you can come away the winner? Enjoy this game or want to give us feedback? Connect with us on Facebook at https://www.facebook.com/alexacasinogames!",
+          "description": "Play a fast paced game of Dice in this party edition of the popular casino game.  Up to 4 players can join in and yell out their bets! Each player starts with £1000 and you keep playing until the last player busts out! Think you can come away the winner? Enjoy this game or want to give us feedback? Connect with us on Facebook at https://www.facebook.com/alexacasinogames!",
           "largeIconUri": "https://s3.amazonaws.com/CAPS-SSE/echo_developer/877a/af87d5ce6a414496811864316dae828b/APP_ICON_LARGE?versionId=gRYNTDdQAVoLdmNBOjv9E4HwxMKWNyWm&AWSAccessKeyId=AKIAIEYXX6DHY7O4XWMA&Expires=1536841472&Signature=clHywRiv%2BfWU3ILiBPG4KOSvGmE%3D"
         }
       },
       "isAvailableWorldwide": true,
-      "testingInstructions": "Use the Echo Buttons to designate up to four players for the game. You can use the button between rolls to indicate that you want to place a new bet.",
+      "testingInstructions": "Skill personalization is used to allow players to say their bets in any order. If personalization is not granted, the player will have to confirm who they are when placing the bet",
       "category": "GAMES",
-      "distributionCountries": [],
-      "gadgetSupport": {
-        "maxGadgetButtons": 4,
-        "numPlayersMax": 4,
-        "minGadgetButtons": 1,
-        "requirement": "REQUIRED",
-        "numPlayersMin": 1
-      }
+      "distributionCountries": []
     },
     "apis": {
       "custom": {
         "endpoint": {
-          "sourceDir": "lambda\\custom"
+          "sourceDir": "lambda/custom"
         },
         "interfaces": [
           {
@@ -58,17 +51,16 @@
             "minimumTemplateVersion": "1.0"
           },
           {
-            "type": "GAME_ENGINE"
-          },
-          {
-            "type": "GADGET_CONTROLLER"
-          },
-          {
             "type": "CAN_FULFILL_INTENT_REQUEST"
           }
         ]
       }
     },
+    "permissions": [
+      {
+        "name": "alexa::person_id:read"
+      }
+    ],
     "manifestVersion": "1.0",
     "privacyAndCompliance": {
       "allowsPurchases": false,

@@ -4,6 +4,30 @@
       "invocationName": "party craps",
       "intents": [
         {
+          "name": "PlayerCountIntent",
+          "slots": [
+            {
+              "name": "Players",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "{Players}"
+          ]
+        },
+        {
+          "name": "PlayerNameIntent",
+          "slots": [
+            {
+              "name": "Name",
+              "type": "AMAZON.US_FIRST_NAME"
+            }
+          ],
+          "samples": [
+            "{Name}"
+          ]
+        },
+        {
           "name": "PassBetIntent",
           "slots": [
             {

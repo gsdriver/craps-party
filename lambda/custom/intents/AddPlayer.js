@@ -4,72 +4,50 @@
 
 'use strict';
 
-const buttons = require('../buttons');
 const utils = require('../utils');
 
 module.exports = {
   canHandle: function(handlerInput) {
     const request = handlerInput.requestEnvelope.request;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
-    const game = attributes[attributes.currentGame];
 
-    // Add a player by pressing a button that we haven't seen before
-    if ((attributes.temp.addingPlayers) &&
-      (request.type === 'GameEngine.InputHandlerEvent')) {
-      const buttonId = buttons.getPressedButton(request, attributes);
-      if (buttonId) {
-        let existingPlayer;
-        game.players.forEach((player) => {
-          if (player.buttonId === buttonId) {
-            existingPlayer = true;
-          }
-        });
-
-        if (!existingPlayer) {
-          // New button pressed!
-          attributes.usedButton = true;
-          attributes.temp.buttonId = buttonId;
-          return true;
-        }
-      }
-    }
-
-    return false;
+    return attributes.temp.addingPlayers &&
+      ((request.type === 'IntentRequest')
+      && (request.intent.name === 'PlayerNameIntent'));
   },
-  handle: function(handlerInput) {
+  handle: async function(handlerInput) {
+    const event = handlerInput.requestEnvelope;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
     const res = require('../resources')(handlerInput);
-    let speech = '<audio src="soundbank://soundlibrary/ui/gameshow/amzn_ui_sfx_gameshow_positive_response_01"/> ';
-    let reprompt;
-    const buttonColor = buttons.getPlayerColor(game.players.length);
+    const name = (event.request.intent && event.request.intent.slots
+      && event.request.intent.slots.Name) ? event.request.intent.slots.Name.value : undefined;
 
-    buttons.lightPlayer(handlerInput, attributes.temp.buttonId, buttonColor);
-    game.players.push({
-      buttonId: attributes.temp.buttonId,
-      buttonColor: buttonColor,
-      bankroll: game.startingBankroll,
-      bets: [],
-    });
-    attributes.temp.buttonId = undefined;
-
-    if (game.players.length === 1) {
-      speech += res.getString('ADDPLAYER_FIRSTPLAYER')
-        .replace('{0}', game.players.length);
-      reprompt = res.getString('ADDPLAYER_NEWPLAYER_REPROMPT');
-    } else if (game.players.length < 4) {
-      speech += res.getString('ADDPLAYER_NEWPLAYER')
-        .replace('{0}', utils.playerName(handlerInput, game.players.length));
-      reprompt = res.getString('ADDPLAYER_NEWPLAYER_REPROMPT');
+    // Acknowledge for acknowledgement of the name
+    if (!name) {
+      return handlerInput.responseBuilder
+        .speak(res.getString('ADDPLAYER_NEED_NAME'))
+        .reprompt(res.getString('ADDPLAYER_NEED_NAME'))
+        .getResponse();
     } else {
-      speech += res.getString('ADDPLAYER_MAXPLAYERS');
-      reprompt = res.getString('ADDPLAYER_MAXPLAYERS_REPROMPT');
-      utils.startGame(handlerInput);
-    }
+      // Make sure we haven't heard this person before
+      if (event.context.System.person && event.context.System.person.personId) {
+        const idx = game.players.map((p) => p.personId).indexOf(event.context.System.person.personId);
+        if (idx > -1) {
+          return handlerInput.responseBuilder
+            .speak(res.getString('ADDPLAYER_SAME_PERSON').replace('{0}', game.players[idx].name))
+            .reprompt(res.getString('ADDPLAYER_SAME_PERSON_REPROMPT'))
+            .getResponse();
+        }
+      }
 
-    return handlerInput.responseBuilder
-      .speak(speech)
-      .reprompt(reprompt)
-      .getResponse();
+      attributes.temp.confirmName = name;
+      attributes.temp.personId = (event.context.System.person) ? 
+        event.context.System.person.personId : undefined;
+      return handlerInput.responseBuilder
+        .speak(res.getString('ADDPLAYER_CONFIRM_NAME').replace('{0}', name))
+        .reprompt(res.getString('ADDPLAYER_CONFIRM_NAME').replace('{0}', name))
+        .getResponse();
+    }
   },
 };

@@ -1,0 +1,59 @@
+//
+// Handles adding a new player
+//
+
+'use strict';
+
+const utils = require('../utils');
+
+module.exports = {
+  canHandle: function(handlerInput) {
+    const request = handlerInput.requestEnvelope.request;
+    const attributes = handlerInput.attributesManager.getSessionAttributes();
+
+    return attributes.temp.confirmName &&
+      ((request.type === 'IntentRequest')
+      && ((request.intent.name === 'AMAZON.YesIntent') || (request.intent.name === 'AMAZON.NoIntent')));
+  },
+  handle: async function(handlerInput) {
+    const event = handlerInput.requestEnvelope;
+    const request = handlerInput.requestEnvelope.request;
+    const attributes = handlerInput.attributesManager.getSessionAttributes();
+    const game = attributes[attributes.currentGame];
+    const res = require('../resources')(handlerInput);
+
+    if (request.intent.name === 'AMAZON.YesIntent') {
+      const personId = (event.context.System.person) ? 
+        event.context.System.person.personId : attributes.temp.personId;
+
+      game.players.push({
+        name: attributes.temp.confirmName,
+        personId: personId,
+        bankroll: game.startingBankroll,
+        bets: [],
+      });
+
+      attributes.temp.confirmName = undefined;
+      attributes.temp.personId = undefined;
+
+      // Do we have another player to add?
+      if (game.players.length < attributes.temp.addingPlayers) {
+        return handlerInput.responseBuilder
+          .speak(res.getString('CONFIRMNAME_NEXT'))
+          .reprompt(res.getString('CONFIRMNAME_NEXT_REPROMPT'))
+          .getResponse();
+      } else {
+        return handlerInput.responseBuilder
+          .speak(res.getString('CONFIRMNAME_PLAY'))
+          .reprompt(res.getString('CONFIRMNAME_PLAY_REPROMPT'))
+          .getResponse();
+      }
+    } else {
+      attributes.temp.confirmName = undefined;
+      return handlerInput.responseBuilder
+      .speak(res.getString('CONFIRMNAME_TRYAGAIN'))
+      .reprompt(res.getString('CONFIRMNAME_TRYAGAIN'))
+      .getResponse();
+    }
+  },
+};

@@ -8,7 +8,7 @@
           "apis": {
             "custom": {
               "endpoint": {
-                "uri": "arn:aws:lambda:us-east-1:129065607926:function:CrapsParty"
+                "uri": "arn:aws:lambda:us-east-1:129065607926:function:CrapsParty_v2"
               }
             }
           }
@@ -17,25 +17,28 @@
       "in_skill_products": [],
       "resources": {
         "manifest": {
-          "eTag": "1d0761c139939cd27611263958a011a8"
+          "eTag": "911ee0b4ed03f64c199c5f651c5bf191"
         },
         "interactionModel": {
           "en-GB": {
-            "eTag": "3f9e62e769ba5393835a442ab8d2d953"
+            "eTag": "4d9aa6e409acd1e0ef0e4ead79f45be9"
           },
           "en-US": {
-            "eTag": "eb4c7df21d4ae41a599d1855347cb06c"
+            "eTag": "4a47c424bbace9331b14f77e96b28261"
           }
         },
         "lambda": [
           {
-            "arn": "arn:aws:lambda:us-east-1:129065607926:function:CrapsParty",
-            "functionName": "arn:aws:lambda:us-east-1:129065607926:function:CrapsParty",
-            "awsRegion": "us-east-1",
             "alexaUsage": [
               "custom/default"
             ],
-            "revisionId": "4cf50d60-1cfa-4c39-b8d8-3ad99d1b868b"
+            "arn": "arn:aws:lambda:us-east-1:129065607926:function:CrapsParty_v2",
+            "awsRegion": "us-east-1",
+            "codeUri": "lambda/custom",
+            "functionName": "CrapsParty_v2",
+            "handler": "index.handler",
+            "revisionId": "07183d01-f8de-444b-af24-6ece764e1343",
+            "runtime": "nodejs10.x"
           }
         ]
       }

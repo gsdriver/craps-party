@@ -10,7 +10,7 @@
     "alexa-speech-utils": "~0.2.0",
     "ask-sdk": "^2.0.7",
     "aws-sdk": "^2.248.1",
-    "dashbot": "^10.1.1",
+    "dashbot": "^10.4.5",
     "moment-timezone": "^0.5.21",
     "seedrandom": "^2.4.3"
   },

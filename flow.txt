@@ -1,0 +1,14 @@
+Basic flow
+ - Launch the skill; prompt for permission for skill personalization if not enabled
+ - Do a roll call
+   - How many players?
+   - For each player; say your name (allows association of personal id with name)
+ - Start playing - say who the shooter will be
+ - Everyone can say their bet at any time
+   - If we have personlization, we will acknowledge
+   - If not (in that request), we'll confirm who it is - we'll start with the name after the last person who said something
+ - The shooter can say roll when they are ready to roll the dice
+   - If there is no personalization, we'll just accept and roll
+   - If there is personalization and it's not the shooter, we'll say who the shooter is and ask them to confirm
+ - After each roll, you can place additional bets. We let them know this after the point is established
+ - Again, same logic repeats for saying roll

@@ -1,8 +1,32 @@
 {
   "interactionModel": {
     "languageModel": {
-      "invocationName": "party craps",
+      "invocationName": "party dice",
       "intents": [
+        {
+          "name": "PlayerCountIntent",
+          "slots": [
+            {
+              "name": "Players",
+              "type": "AMAZON.NUMBER"
+            }
+          ],
+          "samples": [
+            "{Players}"
+          ]
+        },
+        {
+          "name": "PlayerNameIntent",
+          "slots": [
+            {
+              "name": "Name",
+              "type": "AMAZON.GB_FIRST_NAME"
+            }
+          ],
+          "samples": [
+            "{Name}"
+          ]
+        },
         {
           "name": "PassBetIntent",
           "slots": [

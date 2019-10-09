@@ -4,11 +4,10 @@ const seedrandom = require('seedrandom');
 
 const common = {
   // AddPlayer.js
-  'ADDPLAYER_FIRSTPLAYER': 'Welcome <say-as interpret-as="ordinal">1</say-as> player. Next player press a different button or press this button again to play solo.|I got 1 player! Next player press a different button or say start game to go it alone.',
-  'ADDPLAYER_NEWPLAYER': 'Welcome {0}. Next player press a different button or say start to start playing.|{0} is in the game! Say start to start playing or press a new button to add another player|{0} is in the house! If you\'re ready to play press this button again, or have another player join by pressing a different Echo Button.',
-  'ADDPLAYER_MAXPLAYERS': 'OK, that fills the table - let\'s get started! Press a button and say your bet.|Table\'s full! Press a button and place your bet.',
-  'ADDPLAYER_NEWPLAYER_REPROMPT': 'Still there? Press a button or say start to play.|Come on, press a button or say start to play|Press a button <break time=\'300ms\'/> any button.',
-  'ADDPLAYER_MAXPLAYERS_REPROMPT': 'Don\'t be shy <break time=\'300ms\'/> someone press a button to place a bet.|Please press a button to place a bet.',
+  'ADDPLAYER_NEED_NAME': 'Sorry, I didn\'t get that Please say a name for this player.',
+  'ADDPLAYER_CONFIRM_NAME': 'I heard {0}. Is that correct?',
+  'ADDPLAYER_SAME_PERSON': 'This sounds like the same person as {0}. Please have a different person speak up.',
+  'ADDPLAYER_SAME_PERSON_REPROMPT': 'Please have a different person give their name.',
   // Bet.js
   'BET_INVALID_REPROMPT': 'What else can I help you with?',
   'BET_NO_BETFORODDS': 'Sorry, there is no bet to place odds on. ',
@@ -26,6 +25,12 @@ const common = {
   'BETPROMPT_PLACEBET_REPROMPT': 'Place your bet {0}',
   'BETPROMPT_NOTENOUGH': 'You don\'t have enough money to place another bet. Anyone else?',
   'BETPROMPT_NOTENOUGH_REPROMPT': 'Say roll to roll the dice.',
+  // ConfirmName.js
+  'CONFIRMNAME_NEXT': 'Great. Please say the name of the next player.',
+  'CONFIRMNAME_NEXT_REPROMPT': 'What is the name of the next player?',
+  'CONFIRMNAME_PLAY': 'OK, we have all the player names. Let\'s play!',
+  'CONFIRMNAME_PLAY_REPROMPT': 'Let\'s play!',
+  'CONFIRMNAME_TRYAGAIN': 'Please say your name again.',
   // EndRollCall.js
   'ENDROLLCALL_NOPLAYERS': 'Looks like no one\'s there. Come back to {0} when you\'re ready to play!',
   'ENDROLLCALL_STARTGAME': 'OK, I think we have everyone. Press your Echo Button again to place bets, or say roll to roll the dice.',
@@ -40,12 +45,17 @@ const common = {
   'HELP_REPROMPT': 'What else can I help you with?',
   'HELP_CARD_TEXT': '{0} is a fast-paced game played with a pair of dice. On the first roll of the dice a total of 7 or 11 wins while a roll of 2, 3, or 12 loses.  Any other roll establishes a point. You continue rolling the dice until you either roll the point again (and win), or roll a 7 (and lose).\n  At the start of the game, each player buzzes in with an Echo Button. Each player can then place a bet by pressing the Echo Button. You must bet a line bet which is either a PASS BET which pays if the shooter wins according to the rules above, or a DON\'T PASS bet which will pay if the shooter loses (it pushess if the initial roll is 12). Any player who doesn\'t place a line bet before the shooter rolls the dice will automatically place a pass bet at the table minimum. You can also place a FIELD BET which which pays if the next roll is 2, 3, 4, 9, 10, 11, or 12 (it pays 2:1 on a 12) and loses on all other rolls. Once the point is established you can place an ODDS BET of up to 10 times your line bet. This bet pays true odds if the point is rolled (that is, 2:1 if the point is 4 or 10, 3:2 if the point is 5 or 9, and 6:5 if the point is 6 or 8). If you accidentally place the wrong bet you can say REMOVE BET to remove the bet, and you can say REPEAT to hear the current bankroll and full set of bets you have up. Good luck!',
   // Launch.js
-  'LAUNCH_WELCOME_BUTTON': 'Welcome to the fast action game of {0}.  Could the first person get us started by pressing an Echo Button?|Ready for some fun? Let\'s play {0}! Player one, press an Echo Button.|Would the first player press an Echo Button to get us started with the fast action game of {0}?',
-  'LAUNCH_NEED_BUTTONS': 'Sorry to play {0} you must have Echo Buttons.',
-  'LAUNCH_REPROMPT': 'Would you like to play? ',
+  'LAUNCH_WELCOME': 'Welcome to the fast action game of {0}. How many people are playing today?|Ready for some fun? Let\'s play {0}! How many people are playing today?|To get us started with the fast action game of {0}, tell me how many people are playing.',
+  'LAUNCH_REPROMPT': 'How many people are playing?',
   'LAUNCH_GOOD_MORNING': 'Good morning <break time=\"200ms\"/> ',
   'LAUNCH_GOOD_AFTERNOON': 'Good afternoon <break time=\"200ms\"/> ',
   'LAUNCH_GOOD_EVENING': 'Good evening <break time=\"200ms\"/> ',
+  // PlayerCount.js
+  'PLAYERCOUNT_NEED_COUNT': 'Please tell me how many people are playing this game.',
+  'PLAYERCOUNT_BAD_COUNT': 'This game supports 1 to 4 players.',
+  'PLAYERCOUNT_BAD_COUNT_REPROMPT': 'Please say a number of players between 1 and 4.',
+  'GETPLAYER_NAME': 'What is the name of the <say-as interpret-as="ordinal">{0}</say-as> player?',
+  'GETPLAYER_NAME_REPROMPT': 'Please tell me the player\'s name.',
   // Remove.js
   'REMOVE_REPROMPT': 'What else can I help you with?',
   'REMOVE_CANTREMOVE_PASSBET': 'Sorry, you can\'t remove a line bet once a point has been established. ',
