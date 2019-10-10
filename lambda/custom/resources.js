@@ -10,12 +10,16 @@ const common = {
   'ADDPLAYER_SAME_PERSON_REPROMPT': 'Please have a different person give their name.',
   // Bet.js
   'BET_INVALID_REPROMPT': 'What else can I help you with?',
+  'BET_NEED_NAME': 'Sorry I\'m not sure who is placing this bet. Who is this?',
   'BET_NO_BETFORODDS': 'Sorry, there is no bet to place odds on. ',
   'INVALID_BET_NO_POINT': 'Sorry, this bet can\'t be played until a point has been established.',
   'INVALID_BET_POINT': 'Sorry, this bet can\'t be played once a point has been established.',
   'INVALID_BET_HAVE_LINEBET': 'Sorry, you already have a line bet in play.',
   'BET_DUPLICATE_ADDED': 'Adding to your existing bet for a total of ',
-  'BET_PLACED_REPROMPT': 'Place another bet or say roll to roll the dice.',
+  'BET_PLACED_REPROMPT_PERSONAL': 'Anyone else want to yell out a bet? Or say roll to roll the dice.',
+  'BET_PLACED_REPROMPT_NONPERSONAL': '{0}, you can place a bet. Or say roll to roll the dice.',
+  'BET_PLACED_REPROMPT_NONPERSONAL_ROLL': 'Say roll to roll the dice.',
+  'BET_WRONG_NAME': 'Sorry, {0} is not on my list of players. Is this {1}?',
   // BetPrompt.js
   'BETPROMPT_STARTING_SOLO': 'It\'s a one player game! Press your button and call out your bet. |Starting the game with one player <amazon:effect name="whispered">you know this game is even better with multiple players.</amazon:effect> Press your button to call out your bet. |OK, one player today <break time=\'300ms\'/> <amazon:effect name="whispered">next time invite some friends over.</amazon:effect> Could you press your button to place a bet? ',
   'BETPROMPT_STARTING': 'Let\'s go with {0} players. Anyone <break time=\'300ms\'/> press your button and call out your bet. |Starting the game with {0} players. Anyone can press their button to call out your bet. |OK, {0} players today, awesome! Could one of you press your button and place a bet? ',
@@ -28,19 +32,15 @@ const common = {
   // ConfirmName.js
   'CONFIRMNAME_NEXT': 'Great. Please say the name of the next player.',
   'CONFIRMNAME_NEXT_REPROMPT': 'What is the name of the next player?',
-  'CONFIRMNAME_PLAY': 'OK, we have all the player names. Let\'s play!',
-  'CONFIRMNAME_PLAY_REPROMPT': 'Let\'s play!',
+  'CONFIRMNAME_PLAY_PERSONAL': 'OK, we have all the players names. You can start playing by saying your bet in any order.',
+  'CONFIRMNAME_PLAY_NONPERSONAL': 'OK, we have all the player names. Let\'s play! {0}, you first. Place a bet.',
+  'CONFIRMNAME_PLAY_REPROMPT': 'Place a bet to start playing.',
   'CONFIRMNAME_TRYAGAIN': 'Please say your name again.',
-  // EndRollCall.js
-  'ENDROLLCALL_NOPLAYERS': 'Looks like no one\'s there. Come back to {0} when you\'re ready to play!',
-  'ENDROLLCALL_STARTGAME': 'OK, I think we have everyone. Press your Echo Button again to place bets, or say roll to roll the dice.',
-  'ENDROLLCALL_STARTGAME_REPROMPT': 'Press a button to bet or say roll to roll the dice.',
   // Exit.js
   'EXIT_GAME': '{0} Goodbye.',
   // Help.js
   'HELP_ADDING_PLAYERS': 'Press a button to add a new player. You need to have Echo Buttons in order to play this game.',
   'HELP_ADDING_PLAYERS_ADDED': 'Press another button to add a new player or one of the buttons you\'ve already pressed to start the game.',
-  'HELP_BETTING_PLAYER': 'Press one of the player buttons to place a bet.',
   'HELP_INGAME': 'You can say roll to roll the dice <break time=\'300ms\'/> or any player can press their button to place a bet. Refer to the help card to see what bets you can place.',
   'HELP_REPROMPT': 'What else can I help you with?',
   'HELP_CARD_TEXT': '{0} is a fast-paced game played with a pair of dice. On the first roll of the dice a total of 7 or 11 wins while a roll of 2, 3, or 12 loses.  Any other roll establishes a point. You continue rolling the dice until you either roll the point again (and win), or roll a 7 (and lose).\n  At the start of the game, each player buzzes in with an Echo Button. Each player can then place a bet by pressing the Echo Button. You must bet a line bet which is either a PASS BET which pays if the shooter wins according to the rules above, or a DON\'T PASS bet which will pay if the shooter loses (it pushess if the initial roll is 12). Any player who doesn\'t place a line bet before the shooter rolls the dice will automatically place a pass bet at the table minimum. You can also place a FIELD BET which which pays if the next roll is 2, 3, 4, 9, 10, 11, or 12 (it pays 2:1 on a 12) and loses on all other rolls. Once the point is established you can place an ODDS BET of up to 10 times your line bet. This bet pays true odds if the point is rolled (that is, 2:1 if the point is 4 or 10, 3:2 if the point is 5 or 9, and 6:5 if the point is 6 or 8). If you accidentally place the wrong bet you can say REMOVE BET to remove the bet, and you can say REPEAT to hear the current bankroll and full set of bets you have up. Good luck!',
@@ -64,7 +64,7 @@ const common = {
   'READ_BETS': 'You bet {0}. ',
   'READ_POINT': 'The point is {0}. ',
   // Roll.js
-  'ROLL_RESULT': 'Shooter got {0} <break time=\'300ms\'/> |The shooter rolled {0} <break time=\'300ms\'/> |{0} <break time=\'300ms\'/> |The dice came up {0} <break time=\'300ms\'/> |It\'s {0} <break time=\'300ms\'/> ',
+  'ROLL_RESULT': '{1}} got {0} <break time=\'300ms\'/> |{1} rolled {0} <break time=\'300ms\'/> |{0} <break time=\'300ms\'/> |The dice came up {0} <break time=\'300ms\'/> |It\'s {0} <break time=\'300ms\'/> ',
   'ROLL_BUSTED': 'Player {0} lost all their money. Resetting their bankroll and clearing their bets. ',
   'ROLL_BUSTED_PLAYEROUT': 'Player {0} lost all their money. You\'re outta here! ',
   'ROLL_NET_PUSH': ' You broke even. ',
@@ -82,8 +82,7 @@ const common = {
   'SOLO_PLAYER': ' | |player',
   // Unhandled.js
   'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.',
-  'UNKNOWN_ADDING_PLAYERS': 'Please press a new button to add players or one you\'ve already pressed to start the game.',
-  'UNKNOWN_BETTING_PLAYER': 'You need to press a button first so I know who\'s talking.',
+  'UNKNOWN_ADDING_PLAYERS': 'Please say a name to continue adding players before starting to play.',
   'UNKNOWN_INTENT_REPROMPT': 'Try saying Bet.',
 };
 

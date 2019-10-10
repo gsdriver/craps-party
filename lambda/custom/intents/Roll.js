@@ -11,18 +11,11 @@ module.exports = {
   canHandle: function(handlerInput) {
     const request = handlerInput.requestEnvelope.request;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
-    const game = attributes[attributes.currentGame];
 
-    // If no players, can't roll
-    // Make sure all players are added - and check for the personId
-    if (!game.players || (game.players.length === 0)) {
-      return false;
-    }
-
-    return ((request.type === 'IntentRequest')
+    return (!attributes.temp.needPlayerCount && !attributes.temp.addingPlayers
+      && ((request.type === 'IntentRequest')
       && ((request.intent.name === 'RollIntent') ||
-        (request.intent.name === 'StartIntent') ||
-        (request.intent.name === 'AMAZON.YesIntent')));
+        (request.intent.name === 'AMAZON.YesIntent'))));
   },
   handle: function(handlerInput) {
     const event = handlerInput.requestEnvelope;
@@ -44,7 +37,7 @@ module.exports = {
       utils.startGame(handlerInput);
       attributes.temp.rolled = true;
     }
-    attributes.temp.bettingPlayer = undefined;
+    game.currentPlayer = undefined;
 
     // First, place bets for anyone who hasn't made a bet
     attributes.temp.roundOver = undefined;
@@ -115,7 +108,8 @@ module.exports = {
       speechTime += 900;
     }
 
-    text = res.getString('ROLL_RESULT').replace('{0}', res.sayRoll(game.dice));
+    text = res.getString('ROLL_RESULT').replace('{0}', res.sayRoll(game.dice))
+      .replace('{1}', game.players[game.shooter].name);
     speech += text;
     speechTime += estimateSpeechTime(text);
 

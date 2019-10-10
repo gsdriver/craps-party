@@ -21,10 +21,10 @@
         },
         "interactionModel": {
           "en-GB": {
-            "eTag": "4d9aa6e409acd1e0ef0e4ead79f45be9"
+            "eTag": "6467349a9aa6534ea9621e4b7a80fea2"
           },
           "en-US": {
-            "eTag": "4a47c424bbace9331b14f77e96b28261"
+            "eTag": "39792cf259e970d47bddd36b80eb4579"
           }
         },
         "lambda": [
@@ -37,7 +37,7 @@
             "codeUri": "lambda/custom",
             "functionName": "CrapsParty_v2",
             "handler": "index.handler",
-            "revisionId": "07183d01-f8de-444b-af24-6ece764e1343",
+            "revisionId": "11c2d1c2-c4ea-4847-ab3c-078a15fed6d7",
             "runtime": "nodejs10.x"
           }
         ]

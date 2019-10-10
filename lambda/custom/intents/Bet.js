@@ -5,6 +5,7 @@
 'use strict';
 
 const utils = require('../utils');
+const speechUtils = require('alexa-speech-utils');
 
 module.exports = {
   canHandle: function(handlerInput) {
@@ -12,15 +13,26 @@ module.exports = {
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
 
-    return (((attributes.temp.bettingPlayer !== undefined)
-        || (game.players.length === 1))
+    // We need to be past the registration state
+    if (!attributes.temp.needPlayerCount && !attributes.temp.addingPlayers
       && (request.type === 'IntentRequest')
       && ((request.intent.name === 'PassBetIntent')
         || (request.intent.name === 'DontPassBetIntent')
         || (request.intent.name === 'OddsBetIntent')
-        || (request.intent.name === 'FieldBetIntent')));
+        || (request.intent.name === 'FieldBetIntent'))) {
+      return true;
+    }
+
+    // It's possible we needed them to confirm their name
+    if (!attributes.temp.addingPlayers && attributes.temp.bettingIntent &&
+      ((request.type === 'IntentRequest')
+      && (request.intent.name === 'PlayerNameIntent'))) {
+      return true;
+    }
+
+    return false;
   },
-  handle: function(handlerInput) {
+  handle: async function(handlerInput) {
     const event = handlerInput.requestEnvelope;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
@@ -35,37 +47,68 @@ module.exports = {
     let bet = {};
     let baseBet;
 
-    if (attributes.temp.bettingPlayer === undefined) {
-      attributes.temp.bettingPlayer = 0;
-    }
-    const player = game.players[attributes.temp.bettingPlayer];
-
     // Make sure this is a valid bet for the state
-    if (game.point) {
-      if (validBets['POINT'].indexOf(event.request.intent.name) === -1) {
-        speechError = res.getString('INVALID_BET_POINT');
-        reprompt = res.getString('BET_INVALID_REPROMPT');
+    if (handlerInput.requestEnvelope.request.intent.name !== 'PlayerNameIntent') {
+      if (game.point) {
+        if (validBets['POINT'].indexOf(event.request.intent.name) === -1) {
+          return handlerInput.responseBuilder
+            .speak(res.getString('INVALID_BET_POINT'))
+            .reprompt(res.getString('BET_INVALID_REPROMPT'))
+            .getResponse();
+        }
+      } else {
+        if (validBets['NOPOINT'].indexOf(event.request.intent.name) === -1) {
+          return handlerInput.responseBuilder
+            .speak(res.getString('INVALID_BET_NO_POINT'))
+            .reprompt(res.getString('BET_INVALID_REPROMPT'))
+            .getResponse();
+        }
       }
-    } else {
-      if (validBets['NOPOINT'].indexOf(event.request.intent.name) === -1) {
-        speechError = res.getString('INVALID_BET_NO_POINT');
-        reprompt = res.getString('BET_INVALID_REPROMPT');
+    }
+
+    // Now let's see if we can figure out who is placing this bet
+    // If not, then we will need to prompt
+    const data = utils.getActivePlayer(handlerInput);
+    const player = data.player;
+    const intent = data.intent;
+
+    if (!player) {
+      if (attributes.temp.bettingIntent && (intent.name === 'PlayerNameIntent')
+        && (intent.slots.Name && intent.slots.Name.value)) {
+        // This means they were prompted for a name but gave one not in our roster
+        // So let's echo back the name we heard and the names of the players
+        speech = res.getString('BET_WRONG_NAME')
+          .replace('{0}', intent.slots.Name.value)
+          .replace('{1}', speechUtils.or(game.players.map((p) => p.name)));
+        return handlerInput.responseBuilder
+          .speak(speech)
+          .reprompt(res.getString('BET_NEED_NAME'))
+          .getResponse();
       }
+
+      attributes.temp.bettingIntent = attributes.temp.bettingIntent || intent;
+      return handlerInput.responseBuilder
+        .speak(res.getString('BET_NEED_NAME'))
+        .reprompt(res.getString('BET_NEED_NAME'))
+        .getResponse();
     }
 
     // If this is pass or don't pass, make sure we don't already have a line bet
-    if (((event.request.intent.name === 'PassBetIntent') ||
-          (event.request.intent.name === 'DontPassBetIntent'))
+    attributes.temp.bettingIntent = undefined;
+    if (((intent.name === 'PassBetIntent') ||
+          (intent.name === 'DontPassBetIntent'))
         && utils.getLineBet(player.bets)) {
-      speechError = res.getString('INVALID_BET_HAVE_LINEBET');
-      reprompt = res.getString('BET_INVALID_REPROMPT');
+      return handlerInput.responseBuilder
+        .speak(res.getString('INVALID_BET_HAVE_LINEBET'))
+        .reprompt(res.getString('BET_INVALID_REPROMPT'))
+        .getResponse();
     }
 
     // Keep validating input if we don't have an error yet
     if (!speechError) {
-      bet.amount = getBet(event, attributes);
-      if (event.request.intent.name === 'OddsBetIntent') {
-        baseBet = utils.getBaseBet(attributes);
+      bet.amount = getBet(player, intent, attributes);
+      if (intent.name === 'OddsBetIntent') {
+        baseBet = utils.getBaseBet(player, attributes);
         if (!baseBet) {
           speechError = res.getString('BET_NO_BETFORODDS');
           reprompt = res.getString('BET_INVALID_REPROMPT');
@@ -83,7 +126,7 @@ module.exports = {
 
     if (!speechError) {
       // OK, we're good to bet - let's set up the numbers and type
-      switch (event.request.intent.name) {
+      switch (intent.name) {
         case 'DontPassBetIntent':
           player.lineBet = bet.amount;
           player.passPlayer = false;
@@ -169,7 +212,22 @@ module.exports = {
         }
       }
 
-      reprompt = res.getString('BET_PLACED_REPROMPT');
+      // If this is non-personalized (in order) then we should prompt
+      // for the next player to play, or assume they have all bet (if at end)
+      // If it is personalized, just say anyone can should out a bet
+      if (attributes.temp.personalized) {
+        reprompt = res.getString('BET_PLACED_REPROMPT_PERSONAL');        
+      } else {
+        game.currentPlayer++;
+        if (game.currentPlayer >= game.players.length) {
+          game.currentPlayer = undefined;
+          reprompt = res.getString('BET_PLACED_REPROMPT_NONPERSONAL_ROLL');
+        } else {
+          reprompt = res.getString('BET_PLACED_REPROMPT_NONPERSONAL')
+            .replace('{0}', game.players[game.currentPlayer].name);
+        }
+      }
+
       speech = speech.replace('{0}', bet.amount).replace('{1}', reprompt);
       if (duplicateText) {
         speech = duplicateText + speech;
@@ -190,19 +248,17 @@ module.exports = {
   },
 };
 
-function getBet(event, attributes) {
+function getBet(player, intent, attributes) {
   // The bet amount is optional - if not present we will use a default value
   // of either the last bet amount or the minimum bet for the table
   let amount;
   const game = attributes[attributes.currentGame];
-  const player = game.players[attributes.temp.bettingPlayer];
-  const amountSlot = (event.request.intent && event.request.intent.slots
-      && event.request.intent.slots.Amount);
+  const amountSlot = (intent && intent.slots && intent.slots.Amount);
 
   if (amountSlot && amountSlot.value) {
     // If the bet amount isn't an integer, we'll use the default value (1 unit)
     amount = parseInt(amountSlot.value);
-  } else if (player.lineBet && (event.request.intent.name === 'OddsBetIntent')) {
+  } else if (player.lineBet && (ntent.name === 'OddsBetIntent')) {
     amount = player.lineBet * game.maxOdds;
   } else if (player.bets && player.bets.length) {
     amount = player.bets[player.bets.length - 1].amount;

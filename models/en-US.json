@@ -32,7 +32,10 @@
           "slots": [
             {
               "name": "Amount",
-              "type": "AMAZON.NUMBER"
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{Amount} dollars"
+              ]
             }
           ],
           "samples": [
@@ -68,7 +71,10 @@
           "slots": [
             {
               "name": "Amount",
-              "type": "AMAZON.NUMBER"
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{Amount} dollars"
+              ]
             }
           ],
           "samples": [
@@ -111,7 +117,10 @@
           "slots": [
             {
               "name": "Amount",
-              "type": "AMAZON.NUMBER"
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{Amount} dollars"
+              ]
             }
           ],
           "samples": [
@@ -145,7 +154,10 @@
           "slots": [
             {
               "name": "Amount",
-              "type": "AMAZON.NUMBER"
+              "type": "AMAZON.NUMBER",
+              "samples": [
+                "{Amount} dollars"
+              ]
             }
           ],
           "samples": [
@@ -257,21 +269,92 @@
             "roll the dice",
             "shake those bones"
           ]
-        },
-        {
-          "name": "StartIntent",
-          "samples": [
-            "let's start the game",
-            "Let's get started",
-            "start",
-            "start the game",
-            "start game",
-            "get started",
-            "let's get going",
-            "let's go"
-          ]
         }
       ]
-    }
+    },
+    "dialog": {
+      "intents": [
+          {
+              "name": "PassBetIntent",
+              "confirmationRequired": false,
+              "prompts": {},
+              "slots": [
+                  {
+                      "name": "Amount",
+                      "type": "AMAZON.NUMBER",
+                      "confirmationRequired": false,
+                      "elicitationRequired": true,
+                      "prompts": {
+                          "elicitation": "Elicit.Slot.1212390312927.922572577369"
+                      }
+                  }
+              ]
+          },
+          {
+            "name": "DontPassBetIntent",
+            "confirmationRequired": false,
+            "prompts": {},
+            "slots": [
+                {
+                    "name": "Amount",
+                    "type": "AMAZON.NUMBER",
+                    "confirmationRequired": false,
+                    "elicitationRequired": true,
+                    "prompts": {
+                        "elicitation": "Elicit.Slot.1212390312927.922572577369"
+                    }
+                }
+            ]
+        },
+        {
+          "name": "OddsBetIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+              {
+                  "name": "Amount",
+                  "type": "AMAZON.NUMBER",
+                  "confirmationRequired": false,
+                  "elicitationRequired": true,
+                  "prompts": {
+                      "elicitation": "Elicit.Slot.1212390312927.922572577369"
+                  }
+              }
+          ]
+        },
+        {
+          "name": "FieldBetIntent",
+          "confirmationRequired": false,
+          "prompts": {},
+          "slots": [
+              {
+                  "name": "Amount",
+                  "type": "AMAZON.NUMBER",
+                  "confirmationRequired": false,
+                  "elicitationRequired": true,
+                  "prompts": {
+                      "elicitation": "Elicit.Slot.1212390312927.922572577369"
+                  }
+              }
+          ]
+        }
+      ],
+      "delegationStrategy": "ALWAYS"
+  },
+  "prompts": [
+      {
+          "id": "Elicit.Slot.1212390312927.922572577369",
+          "variations": [
+              {
+                  "type": "PlainText",
+                  "value": "Sounds good, how much would you like to bet?"
+              },
+              {
+                  "type": "PlainText",
+                  "value": "How much would you like to bet?"
+              }
+          ]
+      }
+  ]
   }
 }

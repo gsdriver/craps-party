@@ -19,8 +19,6 @@ module.exports = {
     if (attributes.temp.addingPlayers) {
       speech = (game.players.length > 0)
         ? res.getString('HELP_ADDING_PLAYERS_ADDED') : res.getString('HELP_ADDING_PLAYERS');
-    } else if (attributes.temp.bettingPlayer === undefined) {
-      speech = res.getString('HELP_BETTING_PLAYER');
     } else {
       speech = res.getString('HELP_INGAME');
     }

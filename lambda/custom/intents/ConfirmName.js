@@ -35,6 +35,13 @@ module.exports = {
 
       attributes.temp.confirmName = undefined;
       attributes.temp.personId = undefined;
+      
+      // Make note of whether we have person IDs or not
+      // If there were no person IDs that came through, we'll fall back
+      // to a "non-personalized" experience and prompt people in turn
+      if (personId) {
+        attributes.temp.personalized = true;
+      }
 
       // Do we have another player to add?
       if (game.players.length < attributes.temp.addingPlayers) {
@@ -43,10 +50,21 @@ module.exports = {
           .reprompt(res.getString('CONFIRMNAME_NEXT_REPROMPT'))
           .getResponse();
       } else {
-        return handlerInput.responseBuilder
-          .speak(res.getString('CONFIRMNAME_PLAY'))
-          .reprompt(res.getString('CONFIRMNAME_PLAY_REPROMPT'))
-          .getResponse();
+        // Let's play!
+        attributes.temp.addingPlayers = undefined;
+        if (attributes.temp.personalized) {
+          return handlerInput.responseBuilder
+            .speak(res.getString('CONFIRMNAME_PLAY_PERSONAL'))
+            .reprompt(res.getString('CONFIRMNAME_PLAY_REPROMPT'))
+            .getResponse();
+        } else {
+          // Players will need to go in turn
+          game.currentPlayer = 0;
+          return handlerInput.responseBuilder
+            .speak(res.getString('CONFIRMNAME_PLAY_NONPERSONAL').replace('{0}', game.players[game.currentPlayer].name))
+            .reprompt(res.getString('CONFIRMNAME_PLAY_REPROMPT'))
+            .getResponse();
+        }
       }
     } else {
       attributes.temp.confirmName = undefined;
