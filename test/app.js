@@ -77,67 +77,6 @@ function BuildEvent(argv)
      },
   };
 
-  var buttonEvent = {
-    "session": {
-      "sessionId": "SessionId.c88ec34d-28b0-46f6-a4c7-120d8fba8fa7",
-      "application": {
-        "applicationId": APPID
-      },
-      "attributes": {},
-      "user": {
-        "userId": "not-amazon",
-      },
-      "new": false
-    },
-    "request": {
-      "type": "GameEngine.InputHandlerEvent",
-      "requestId": "amzn1.echo-api.request.f25e7902-62bc-4661-90d9-aaac30c1a937",
-      "timestamp": "2018-08-02T01:05:33Z",
-      "locale": LOCALE,
-      "originatingRequestId": "amzn1.echo-api.request.0b7a4f65-115d-427c-9aa0-5c78c57c740f",
-      "events": [
-        {
-          "name": "button_down_event",
-          "inputEvents": [
-            {
-              "gadgetId": "1",
-              "timestamp": "2018-08-02T01:05:29.371Z",
-              "color": "000000",
-              "feature": "press",
-              "action": "down"
-            }
-          ]
-        }
-      ]
-    },
-    "version": "1.0",
-     "context": {
-       "AudioPlayer": {
-         "playerActivity": "IDLE"
-       },
-       "Display": {},
-       "System": {
-         "application": {
-           "applicationId": APPID
-         },
-         "user": {
-           "userId": "not-amazon",
-         },
-         "device": {
-           "deviceId": "not-amazon",
-           "supportedInterfaces": {
-             "AudioPlayer": {},
-             "Display": {
-               "templateVersion": "1.0",
-               "markupVersion": "1.0"
-             }
-           }
-         },
-         "apiEndpoint": "https://api.amazonalexa.com",
-         "apiAccessToken": "",
-       }
-     },
-  };
 
   var openEvent = {
     "session": {
@@ -192,7 +131,6 @@ function BuildEvent(argv)
     data = fs.readFileSync(attributeFile, 'utf8');
     if (data) {
       lambda.session.attributes = JSON.parse(data);
-      buttonEvent.session.attributes = JSON.parse(data);
     }
   }
 
@@ -238,11 +176,6 @@ function BuildEvent(argv)
     lambda.request.intent = repeat;
   } else if (argv[2] == 'launch') {
     returnEvent = openEvent;
-  } else if (argv[2] == 'button') {
-    if (argv.length > 3) {
-      buttonEvent.request.events[0].inputEvents[0].gadgetId = argv[3];
-    }
-    returnEvent = buttonEvent;
   } else if (argv[2] == 'help') {
     lambda.request.intent = help;
   } else if (argv[2] == 'fallback') {

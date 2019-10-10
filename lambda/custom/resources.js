@@ -20,15 +20,6 @@ const common = {
   'BET_PLACED_REPROMPT_NONPERSONAL': '{0}, you can place a bet. Or say roll to roll the dice.',
   'BET_PLACED_REPROMPT_NONPERSONAL_ROLL': 'Say roll to roll the dice.',
   'BET_WRONG_NAME': 'Sorry, {0} is not on my list of players. Is this {1}?',
-  // BetPrompt.js
-  'BETPROMPT_STARTING_SOLO': 'It\'s a one player game! Press your button and call out your bet. |Starting the game with one player <amazon:effect name="whispered">you know this game is even better with multiple players.</amazon:effect> Press your button to call out your bet. |OK, one player today <break time=\'300ms\'/> <amazon:effect name="whispered">next time invite some friends over.</amazon:effect> Could you press your button to place a bet? ',
-  'BETPROMPT_STARTING': 'Let\'s go with {0} players. Anyone <break time=\'300ms\'/> press your button and call out your bet. |Starting the game with {0} players. Anyone can press their button to call out your bet. |OK, {0} players today, awesome! Could one of you press your button and place a bet? ',
-  'BETPROMPT_PLACEBET': 'OK {0} place your bet.|{0} what bet can I put you down for?|{0} place your bet.',
-  'BETPROMPT_SHOOTER': 'OK shooter, place a bet or press your button again to roll the dice. |Shooter, want to bet? Or press your button again to roll the dice. |Let\'s hear what the shooter wants to bet! Or press your button again to get those dice rolling! ',
-  'BETPROMPT_SHOOTER_REPROMPT': 'Come on shooter <break time=\'300ms\'/> place a bet or press the button to roll.',
-  'BETPROMPT_PLACEBET_REPROMPT': 'Place your bet {0}',
-  'BETPROMPT_NOTENOUGH': 'You don\'t have enough money to place another bet. Anyone else?',
-  'BETPROMPT_NOTENOUGH_REPROMPT': 'Say roll to roll the dice.',
   // ConfirmName.js
   'CONFIRMNAME_NEXT': 'Great. Please say the name of the next player.',
   'CONFIRMNAME_NEXT_REPROMPT': 'What is the name of the next player?',
@@ -39,11 +30,11 @@ const common = {
   // Exit.js
   'EXIT_GAME': '{0} Goodbye.',
   // Help.js
-  'HELP_ADDING_PLAYERS': 'Press a button to add a new player. You need to have Echo Buttons in order to play this game.',
-  'HELP_ADDING_PLAYERS_ADDED': 'Press another button to add a new player or one of the buttons you\'ve already pressed to start the game.',
-  'HELP_INGAME': 'You can say roll to roll the dice <break time=\'300ms\'/> or any player can press their button to place a bet. Refer to the help card to see what bets you can place.',
+  'HELP_ADDING_PLAYERS': 'Say the name of the first player ',
+  'HELP_ADDING_PLAYERS_ADDED': 'Say the name of the next player you would like to add. Once we have all players registered, we can start to play the game.',
+  'HELP_INGAME': 'You can say roll to roll the dice <break time=\'300ms\'/> or have any player say a bet. Refer to the help card to see what bets you can place.',
   'HELP_REPROMPT': 'What else can I help you with?',
-  'HELP_CARD_TEXT': '{0} is a fast-paced game played with a pair of dice. On the first roll of the dice a total of 7 or 11 wins while a roll of 2, 3, or 12 loses.  Any other roll establishes a point. You continue rolling the dice until you either roll the point again (and win), or roll a 7 (and lose).\n  At the start of the game, each player buzzes in with an Echo Button. Each player can then place a bet by pressing the Echo Button. You must bet a line bet which is either a PASS BET which pays if the shooter wins according to the rules above, or a DON\'T PASS bet which will pay if the shooter loses (it pushess if the initial roll is 12). Any player who doesn\'t place a line bet before the shooter rolls the dice will automatically place a pass bet at the table minimum. You can also place a FIELD BET which which pays if the next roll is 2, 3, 4, 9, 10, 11, or 12 (it pays 2:1 on a 12) and loses on all other rolls. Once the point is established you can place an ODDS BET of up to 10 times your line bet. This bet pays true odds if the point is rolled (that is, 2:1 if the point is 4 or 10, 3:2 if the point is 5 or 9, and 6:5 if the point is 6 or 8). If you accidentally place the wrong bet you can say REMOVE BET to remove the bet, and you can say REPEAT to hear the current bankroll and full set of bets you have up. Good luck!',
+  'HELP_CARD_TEXT': '{0} is a fast-paced game played with a pair of dice. On the first roll of the dice a total of 7 or 11 wins while a roll of 2, 3, or 12 loses.  Any other roll establishes a point. You continue rolling the dice until you either roll the point again (and win), or roll a 7 (and lose).\n  To start the game, have each player say their name. Players can then place their bets. You must bet a line bet which is either a PASS BET which pays if the shooter wins according to the rules above, or a DON\'T PASS bet which will pay if the shooter loses (it pushess if the initial roll is 12). Any player who doesn\'t place a line bet before the shooter rolls the dice will automatically place a pass bet at the table minimum. You can also place a FIELD BET which which pays if the next roll is 2, 3, 4, 9, 10, 11, or 12 (it pays 2:1 on a 12) and loses on all other rolls. Once the point is established you can place an ODDS BET of up to 10 times your line bet. This bet pays true odds if the point is rolled (that is, 2:1 if the point is 4 or 10, 3:2 if the point is 5 or 9, and 6:5 if the point is 6 or 8). If you accidentally place the wrong bet you can say REMOVE BET to remove the bet, and you can say REPEAT to hear the current bankroll and full set of bets you have up. Good luck!',
   // Launch.js
   'LAUNCH_WELCOME': 'Welcome to the fast action game of {0}. How many people are playing today?|Ready for some fun? Let\'s play {0}! How many people are playing today?|To get us started with the fast action game of {0}, tell me how many people are playing.',
   'LAUNCH_REPROMPT': 'How many people are playing?',
@@ -64,7 +55,7 @@ const common = {
   'READ_BETS': 'You bet {0}. ',
   'READ_POINT': 'The point is {0}. ',
   // Roll.js
-  'ROLL_RESULT': '{1}} got {0} <break time=\'300ms\'/> |{1} rolled {0} <break time=\'300ms\'/> |{0} <break time=\'300ms\'/> |The dice came up {0} <break time=\'300ms\'/> |It\'s {0} <break time=\'300ms\'/> ',
+  'ROLL_RESULT': '{1} got {0} <break time=\'300ms\'/> |{1} rolled {0} <break time=\'300ms\'/> |{0} <break time=\'300ms\'/> |The dice came up {0} <break time=\'300ms\'/> |It\'s {0} <break time=\'300ms\'/> ',
   'ROLL_BUSTED': 'Player {0} lost all their money. Resetting their bankroll and clearing their bets. ',
   'ROLL_BUSTED_PLAYEROUT': 'Player {0} lost all their money. You\'re outta here! ',
   'ROLL_NET_PUSH': ' You broke even. ',
@@ -76,7 +67,7 @@ const common = {
   'ROLL_OFF_TABLE': 'Oops, one of the dice fell off the table - rolling again. ',
   'ROLL_ALLPLAYERS_OUT': 'That\'s it, all players are out of money! Come back soon to play {0} again! ',
   'ROLL_NEW_SHOOTER': 'New shooter coming out! Player {0} let\'s roll! |Good run, now let\'s give {0} a turn! ',
-  'ROLL_TAKE_ODDS': '<break time=\'300ms\'/> Now that the point is established, any player can place an odds bet. Place an odds bet up to {0} times your line bet. <amazon:effect name="whispered">It\'s the best bet in the house.</amazon:effect> Just press your button and say place odds bet or ',
+  'ROLL_TAKE_ODDS': '<break time=\'300ms\'/> Now that the point is established, any player can place an odds bet. Place an odds bet up to {0} times your line bet. <amazon:effect name="whispered">It\'s the best bet in the house.</amazon:effect> Just say place odds bet or ',
   // utils.js
   'PLAYER_NUMBER': 'The <say-as interpret-as="ordinal">{0}</say-as> player|Player {0}|Player {0}|<say-as interpret-as="ordinal">{0}</say-as> player',
   'SOLO_PLAYER': ' | |player',

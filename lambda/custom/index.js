@@ -7,7 +7,6 @@ const PlayerCount = require('./intents/PlayerCount');
 const Remove = require('./intents/Remove');
 const Roll = require('./intents/Roll');
 const Bet = require('./intents/Bet');
-const BetPrompt = require('./intents/BetPrompt');
 const Help = require('./intents/Help');
 const Exit = require('./intents/Exit');
 const SessionEnd = require('./intents/SessionEnd');
@@ -142,7 +141,6 @@ function runGame(event, context, callback) {
       Help,
       Bet,
       Remove,
-      BetPrompt,
       Roll,
       SessionEnd,
       Repeat,

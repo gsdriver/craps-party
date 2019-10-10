@@ -5,7 +5,7 @@
 'use strict';
 
 const utils = require('../utils');
-const speechUtils = require('alexa-speech-utils');
+const speechUtils = require('alexa-speech-utils')();
 
 module.exports = {
   canHandle: function(handlerInput) {
@@ -68,9 +68,9 @@ module.exports = {
 
     // Now let's see if we can figure out who is placing this bet
     // If not, then we will need to prompt
-    const data = utils.getActivePlayer(handlerInput);
-    const player = data.player;
-    const intent = data.intent;
+    const player = utils.getActivePlayer(handlerInput);
+    const intent = (player && (event.request.intent.name === 'PlayerNameIntent')) 
+      ? attributes.temp.bettingIntent : event.request.intent;
 
     if (!player) {
       if (attributes.temp.bettingIntent && (intent.name === 'PlayerNameIntent')
@@ -219,7 +219,7 @@ module.exports = {
         reprompt = res.getString('BET_PLACED_REPROMPT_PERSONAL');        
       } else {
         game.currentPlayer++;
-        if (game.currentPlayer >= game.players.length) {
+        if (game.currentPlayer >= game.players.length - 1) {
           game.currentPlayer = undefined;
           reprompt = res.getString('BET_PLACED_REPROMPT_NONPERSONAL_ROLL');
         } else {
@@ -258,7 +258,12 @@ function getBet(player, intent, attributes) {
   if (amountSlot && amountSlot.value) {
     // If the bet amount isn't an integer, we'll use the default value (1 unit)
     amount = parseInt(amountSlot.value);
-  } else if (player.lineBet && (ntent.name === 'OddsBetIntent')) {
+
+    // If an odds bet, don't exceed max odds
+    if (player.lineBet && (intent.name === 'OddsBetIntent')) {
+      amount = Math.min(amount, player.lineBet * game.maxOdds);
+    }
+  } else if (player.lineBet && (intent.name === 'OddsBetIntent')) {
     amount = player.lineBet * game.maxOdds;
   } else if (player.bets && player.bets.length) {
     amount = player.bets[player.bets.length - 1].amount;

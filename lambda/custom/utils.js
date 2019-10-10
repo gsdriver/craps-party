@@ -112,7 +112,7 @@ module.exports = {
     return game.players[playerNumber - 1].name;
   },
   getActivePlayer: function(handlerInput, test) {
-    let intent = handlerInput.requestEnvelope.request.intent;
+    const intent = handlerInput.requestEnvelope.request.intent;
     const event = handlerInput.requestEnvelope;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
@@ -136,7 +136,6 @@ module.exports = {
           game.currentPlayer = (!attributes.temp.personalized) ? idx : undefined;
         }
         player = game.players[idx];
-        intent = attributes.temp.bettingIntent;
       }
     } else if (!attributes.temp.personalized) {
       if (game.currentPlayer !== undefined) {
@@ -150,6 +149,6 @@ module.exports = {
       }
     }
 
-    return {player, intent};
+    return player;
   },
 };

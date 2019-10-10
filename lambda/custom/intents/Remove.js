@@ -5,6 +5,7 @@
 'use strict';
 
 const utils = require('../utils');
+const speechUtils = require('alexa-speech-utils')();
 
 module.exports = {
   canHandle: function(handlerInput) {
@@ -15,8 +16,8 @@ module.exports = {
       && (request.type === 'IntentRequest')
       && ((request.intent.name === 'RemoveIntent') ||
         (request.intent.name === 'AMAZON.CancelIntent'))) {
-      const player = utils.getActivePlayer(handlerInput, true).player;
-      return (player && (player.bets.length > 0));
+      const player = utils.getActivePlayer(handlerInput, true);
+      return (!player || (player.bets.length > 0));
     }
 
     // It's possible we needed them to confirm their name
@@ -29,6 +30,7 @@ module.exports = {
     return false;
   },
   handle: function(handlerInput) {
+    const event = handlerInput.requestEnvelope;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
     const res = require('../resources')(handlerInput);
@@ -37,9 +39,9 @@ module.exports = {
 
     // Now let's see if we can figure out who is placing this bet
     // If not, then we will need to prompt
-    const data = utils.getActivePlayer(handlerInput);
-    const player = data.player;
-    const intent = data.intent;
+    const player = utils.getActivePlayer(handlerInput);
+    const intent = (player && (event.request.intent.name === 'PlayerNameIntent')) 
+      ? attributes.temp.removeIntent : event.request.intent;
     
     if (!player) {
       if (attributes.temp.removeIntent && (intent.name === 'PlayerNameIntent')
@@ -64,22 +66,24 @@ module.exports = {
 
     attributes.temp.removeIntent = undefined;
     const removeBet = player.bets.length - 1;
-    if (game.point &&
+    if (game.point && !player.bets[removeBet].odds && 
       ((player.bets[removeBet].type === 'PassBet') ||
        (player.bets[removeBet].type === 'DontPassBet'))) {
       // Can't remove line bets after point
       speech = res.getString('REMOVE_CANTREMOVE_PASSBET');
     } else {
-      // If this is an odds bet, we need to remove odds from the base bet too
-      if (player.bets[removeBet].type === 'OddsBet') {
-        const baseBet = utils.getBaseBet(player, attributes);
-        baseBet.odds = undefined;
-        baseBet.oddsPayout = undefined;
+      // If this is an odds bet, we need to remove odds from the base bet
+      if (player.bets[removeBet].odds) {
+        speech = res.getString('REMOVE_BET')
+          .replace('{0}', res.getString('FORMAT_ODDSBET').replace('{0}', player.bets[removeBet].odds));
+        player.bankroll += player.bets[removeBet].odds;
+        player.bets[removeBet].odds = undefined;
+        player.bets[removeBet].oddsPayout = undefined;
+      } else {
+        speech = res.getString('REMOVE_BET').replace('{0}', res.sayBet(player.bets[removeBet]));
+        player.bankroll += player.bets[removeBet].amount;
+        player.bets.splice(removeBet, 1);
       }
-
-      speech = res.getString('REMOVE_BET').replace('{0}', res.sayBet(player.bets[removeBet]));
-      player.bankroll += player.bets[removeBet].amount;
-      player.bets.splice(removeBet, 1);
       speech += reprompt;
     }
 
