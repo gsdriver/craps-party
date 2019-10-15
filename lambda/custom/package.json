@@ -12,7 +12,8 @@
     "aws-sdk": "^2.248.1",
     "dashbot": "^10.4.5",
     "moment-timezone": "^0.5.21",
-    "seedrandom": "^2.4.3"
+    "seedrandom": "^2.4.3",
+    "voicehero-sdk": "0.0.14"
   },
   "devDependencies": {
     "eslint-config-google": "^0.7.1",

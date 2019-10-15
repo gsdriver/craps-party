@@ -13,36 +13,26 @@ module.exports = {
     const request = handlerInput.requestEnvelope.request;
     return (request.type === 'SessionEndedRequest');
   },
-  handle: function(handlerInput) {
-    console.log('End session - saving attributes');
-    return new Promise((resolve, reject) => {
-      const attributes = handlerInput.attributesManager.getSessionAttributes();
-      const event = handlerInput.requestEnvelope;
-      const game = attributes[attributes.currentGame];
+  handle: async function(handlerInput) {
+    const attributes = handlerInput.attributesManager.getSessionAttributes();
+    const event = handlerInput.requestEnvelope;
+    const game = attributes[attributes.currentGame];
 
-      if (game.startingPlayerCount && !process.env.NOSAVETABLE) {
-        // Save the table to S3 - OK if this fails
-        const data = {
-          userId: event.session.user.userId,
-          tableSize: game.startingPlayerCount,
-          rounds: attributes.temp.sessionRounds,
-        };
-        s3.putObject({Body: JSON.stringify(data),
-             Bucket: 'garrett-alexa-usage',
-             Key: 'craps-party/' + Date.now() + '.txt'}, (err, data) => {
-          done();
-        });
-      } else {
-        done();
-      }
+    if (game.startingPlayerCount && !process.env.NOSAVETABLE) {
+      // Save the table to S3 - OK if this fails
+      const data = {
+        userId: event.session.user.userId,
+        tableSize: game.startingPlayerCount,
+        rounds: attributes.temp.sessionRounds,
+      };
+      await s3.putObject({Body: JSON.stringify(data),
+        Bucket: 'garrett-alexa-usage',
+        Key: 'craps-party/' + Date.now() + '.txt'}).promise();
+    }
 
-      function done() {
-        // Clear and persist attributes
-        attributes.temp = undefined;
-        handlerInput.attributesManager.setPersistentAttributes(attributes);
-        handlerInput.attributesManager.savePersistentAttributes();
-        resolve();
-      }
-    });
+    // Clear and persist attributes
+    attributes.temp = undefined;
+    handlerInput.attributesManager.setPersistentAttributes(attributes);
+    handlerInput.attributesManager.savePersistentAttributes();
   },
 };

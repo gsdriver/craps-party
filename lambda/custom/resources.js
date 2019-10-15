@@ -56,8 +56,8 @@ const common = {
   'READ_POINT': 'The point is {0}. ',
   // Roll.js
   'ROLL_RESULT': '{1} got {0} <break time=\'300ms\'/> |{1} rolled {0} <break time=\'300ms\'/> |{0} <break time=\'300ms\'/> |The dice came up {0} <break time=\'300ms\'/> |It\'s {0} <break time=\'300ms\'/> ',
-  'ROLL_BUSTED': 'Player {0} lost all their money. Resetting their bankroll and clearing their bets. ',
-  'ROLL_BUSTED_PLAYEROUT': 'Player {0} lost all their money. You\'re outta here! ',
+  'ROLL_BUSTED': '{0} lost all their money. Resetting their bankroll and clearing their bets. ',
+  'ROLL_BUSTED_PLAYEROUT': '{0} lost all their money. You\'re outta here! ',
   'ROLL_NET_PUSH': ' You broke even. ',
   'ROLL_REPROMPT': 'Say roll to roll the dice.',
   'ROLL_COME_REPROMPT': 'Would you like to play another round?',
@@ -66,11 +66,8 @@ const common = {
   'ROLL_GOT_POINT': 'You rolled the point! |That\'s the point! ',
   'ROLL_OFF_TABLE': 'Oops, one of the dice fell off the table - rolling again. ',
   'ROLL_ALLPLAYERS_OUT': 'That\'s it, all players are out of money! Come back soon to play {0} again! ',
-  'ROLL_NEW_SHOOTER': 'New shooter coming out! Player {0} let\'s roll! |Good run, now let\'s give {0} a turn! ',
+  'ROLL_NEW_SHOOTER': 'New shooter coming out! {0} let\'s roll! |Good run, now let\'s give {0} a turn! ',
   'ROLL_TAKE_ODDS': '<break time=\'300ms\'/> Now that the point is established, any player can place an odds bet. Place an odds bet up to {0} times your line bet. <amazon:effect name="whispered">It\'s the best bet in the house.</amazon:effect> Just say place odds bet or ',
-  // utils.js
-  'PLAYER_NUMBER': 'The <say-as interpret-as="ordinal">{0}</say-as> player|Player {0}|Player {0}|<say-as interpret-as="ordinal">{0}</say-as> player',
-  'SOLO_PLAYER': ' | |player',
   // Unhandled.js
   'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.',
   'UNKNOWN_ADDING_PLAYERS': 'Please say a name to continue adding players before starting to play.',

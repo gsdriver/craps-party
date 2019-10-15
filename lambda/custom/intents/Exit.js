@@ -27,25 +27,16 @@ module.exports = {
 
     return false;
   },
-  handle: function(handlerInput) {
+  handle: async function(handlerInput) {
     const event = handlerInput.requestEnvelope;
     const attributes = handlerInput.attributesManager.getSessionAttributes();
+    const game = attributes[attributes.currentGame];
     const res = require('../resources')(handlerInput);
 
-    if (attributes.bot) {
-      return handlerInput.responseBuilder
-        .speak(res.getString('EXIT_GAME').replace('{0}', ''))
-        .getResponse();
-    } else {
-      return new Promise((resolve, reject) => {
-        ads.getAd(attributes, 'craps-party', event.request.locale, (adText) => {
-          const response = handlerInput.responseBuilder
-            .speak(res.getString('EXIT_GAME').replace('{0}', adText))
-            .withShouldEndSession(true)
-            .getResponse();
-          resolve(response);
-        });
-      });
-    }
+    const adText = await ads.getAd(attributes, 'craps-party', event.request.locale);
+    return handlerInput.responseBuilder
+      .speak(res.getString('EXIT_GAME').replace('{0}', adText))
+      .withShouldEndSession(true)
+      .getResponse();
   },
 };

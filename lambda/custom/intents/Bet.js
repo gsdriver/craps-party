@@ -219,7 +219,7 @@ module.exports = {
         reprompt = res.getString('BET_PLACED_REPROMPT_PERSONAL');        
       } else {
         game.currentPlayer++;
-        if (game.currentPlayer >= game.players.length - 1) {
+        if (game.currentPlayer >= game.players.length) {
           game.currentPlayer = undefined;
           reprompt = res.getString('BET_PLACED_REPROMPT_NONPERSONAL_ROLL');
         } else {

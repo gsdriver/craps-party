@@ -153,7 +153,15 @@ function runGame(event, context, callback) {
     .withAutoCreateTable(true)
     .withSkillId('amzn1.ask.skill.8b5f337f-0c1f-483a-b282-843c76487e7e')
     .lambda();
-  skillFunction(event, context, (err, response) => {
-    callback(err, response);
-  });
+
+  if (process.env.VOICEHEROKEY) {
+    const voicehero = require('voicehero-sdk')(process.env.VOICEHEROKEY).alexa;
+    voicehero.handler(skillFunction)(event, context, (err, response) => {
+      callback(err, response);
+    });
+  } else {
+    skillFunction(event, context, (err, response) => {
+      callback(err, response);
+    });
+  }
 }

@@ -120,6 +120,9 @@ module.exports = {
 
     if (game.players.length === 1) {
       // It's obvious who it is
+      if (!test) {
+        game.currentPlayer = 0;
+      }
       return game.players[0];
     }
 
