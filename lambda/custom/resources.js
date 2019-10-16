@@ -28,7 +28,8 @@ const common = {
   'CONFIRMNAME_PLAY_REPROMPT': 'Place a bet to start playing.',
   'CONFIRMNAME_TRYAGAIN': 'Please say your name again.',
   // Exit.js
-  'EXIT_GAME': '{0} Goodbye.',
+  'EXIT_GAME': '{0} {1} Goodbye.',
+  'EXIT_COME_BACK': 'Come back later if you want to resume your game with {0}',
   // Help.js
   'HELP_ADDING_PLAYERS': 'Say the name of the first player ',
   'HELP_ADDING_PLAYERS_ADDED': 'Say the name of the next player you would like to add. Once we have all players registered, we can start to play the game.',
@@ -36,6 +37,7 @@ const common = {
   'HELP_REPROMPT': 'What else can I help you with?',
   'HELP_CARD_TEXT': '{0} is a fast-paced game played with a pair of dice. On the first roll of the dice a total of 7 or 11 wins while a roll of 2, 3, or 12 loses.  Any other roll establishes a point. You continue rolling the dice until you either roll the point again (and win), or roll a 7 (and lose).\n  To start the game, have each player say their name. Players can then place their bets. You must bet a line bet which is either a PASS BET which pays if the shooter wins according to the rules above, or a DON\'T PASS bet which will pay if the shooter loses (it pushess if the initial roll is 12). Any player who doesn\'t place a line bet before the shooter rolls the dice will automatically place a pass bet at the table minimum. You can also place a FIELD BET which which pays if the next roll is 2, 3, 4, 9, 10, 11, or 12 (it pays 2:1 on a 12) and loses on all other rolls. Once the point is established you can place an ODDS BET of up to 10 times your line bet. This bet pays true odds if the point is rolled (that is, 2:1 if the point is 4 or 10, 3:2 if the point is 5 or 9, and 6:5 if the point is 6 or 8). If you accidentally place the wrong bet you can say REMOVE BET to remove the bet, and you can say REPEAT to hear the current bankroll and full set of bets you have up. Good luck!',
   // Launch.js
+  'LAUNCH_WELCOME_INPROGRESS': 'Welcome back to {0}. You have a game in progress with {1}. Would you like to continue that game?',
   'LAUNCH_WELCOME': 'Welcome to the fast action game of {0}. How many people are playing today?|Ready for some fun? Let\'s play {0}! How many people are playing today?|To get us started with the fast action game of {0}, tell me how many people are playing.',
   'LAUNCH_REPROMPT': 'How many people are playing?',
   'LAUNCH_GOOD_MORNING': 'Good morning <break time=\"200ms\"/> ',
@@ -47,6 +49,10 @@ const common = {
   'PLAYERCOUNT_BAD_COUNT_REPROMPT': 'Please say a number of players between 1 and 4.',
   'GETPLAYER_NAME': 'What is the name of the <say-as interpret-as="ordinal">{0}</say-as> player?',
   'GETPLAYER_NAME_REPROMPT': 'Please tell me the player\'s name.',
+  // ResumeGame.js
+  'RESUMEGAME_TRYAGAIN': 'Please say yes or no to let me know if you want to resume your game.',
+  'RESUMEGAME_NO': 'OK. How many people are playing today?',
+  'RESUMEGAME_NO_REPROMPT': 'How many people are playing?',
   // Remove.js
   'REMOVE_REPROMPT': 'What else can I help you with?',
   'REMOVE_CANTREMOVE_PASSBET': 'Sorry, you can\'t remove a line bet once a point has been established. ',
@@ -77,11 +83,15 @@ const common = {
 const dollar = {
   // From Bet.js
   'BET_EXCEEDS_ODDS': 'Sorry, this bet exceeds {0} times odds based on your line bet of ${1}. ',
-  'PASSBET_PLACED': '${0} pass bet placed. ',
-  'DONTPASSBET_PLACED': '${0} don\'t pass bet placed. ',
-  'ODDS_BET_PLACED': '${0} odds placed. ',
-  'FIELD_BET_PLACED': '${0} field bet placed. ',
+  'PASSBET_PLACED': '${0} pass bet placed for {2}. ',
+  'DONTPASSBET_PLACED': '{2} placed a ${0} don\'t pass bet. ',
+  'ODDS_BET_PLACED': '${0} odds placed for {2}. |{2}, I got your odds placed for ${0}. ',
+  'FIELD_BET_PLACED': '${0} field bet placed for {2}. |${0} on the field for {2}. ',
   'BET_DUPLICATE_NOT_ADDED': 'You already placed ${0} on this bet, and another ${1} would exceed the maximum bet of ${2}. ',
+  // From Exit.js
+  'EXIT_STATUS_ONE_PLAYER': 'You have ${0}.',
+  'EXIT_STATUS_LEADER': '{0} is in the lead with ${1}.',
+  'EXIT_STATUS_NO_LEADER': 'OK, here\'s where we stand.',
   // From Repeat.js
   'READ_BANKROLL': 'You have ${0}. ',
   // From Roll.js
@@ -103,10 +113,10 @@ const dollar = {
 const pound = {
   // From Bet.js
   'BET_EXCEEDS_ODDS': 'Sorry, this bet exceeds {0} times odds based on your line bet of £{1}. ',
-  'PASSBET_PLACED': '£{0} pass bet placed. ',
-  'DONTPASSBET_PLACED': '£{0} don\'t pass bet placed. ',
-  'ODDS_BET_PLACED': '£{0} odds placed. ',
-  'FIELD_BET_PLACED': '£{0} field bet placed. ',
+  'PASSBET_PLACED': '£{0} pass bet placed for {2}. ',
+  'DONTPASSBET_PLACED': '{2} placed a £{0} don\'t pass bet. ',
+  'ODDS_BET_PLACED': '£{0} odds placed for {2}. |{2}, I got your odds placed for £{0}. ',
+  'FIELD_BET_PLACED': '£{0} field bet placed for {2}. |£{0} on the field for {2}. ',
   'BET_DUPLICATE_NOT_ADDED': 'You already placed £{0} on this bet, and another £{1} would exceed the maximum bet of £{2}. ',
   // From Repeat.js
   'READ_BANKROLL': 'You have £{0}. ',
@@ -147,6 +157,13 @@ const utils = (handlerInput) => {
   return {
     getString: function(res) {
       return pickRandomOption(handlerInput, translation[res]);
+    },
+    sayPlayerBankroll: function(player) {
+      if (locale === 'en-GB') {
+        return `${player.name} with ${player.bankroll} pounds`;
+      } else {
+        return `${player.name} with ${player.bankroll} dollars`;
+      }
     },
     sayRoll: function(dice, point) {
       const totalFormat = {

@@ -12,6 +12,7 @@ const Exit = require('./intents/Exit');
 const SessionEnd = require('./intents/SessionEnd');
 const AddPlayer = require('./intents/AddPlayer');
 const ConfirmName = require('./intents/ConfirmName');
+const ResumeGame = require('./intents/ResumeGame');
 const Repeat = require('./intents/Repeat');
 const Unhandled = require('./intents/Unhandled');
 const utils = require('./utils');
@@ -22,6 +23,12 @@ const requestInterceptor = {
       const attributesManager = handlerInput.attributesManager;
       const sessionAttributes = attributesManager.getSessionAttributes();
       const event = handlerInput.requestEnvelope;
+
+      if (sessionAttributes.temp) {
+        sessionAttributes.temp.person = (sessionAttributes.temp.person === 'fred') ? 'wilma' : 
+          ((sessionAttributes.temp.person === 'wilma') ? undefined : 'fred');
+        event.context.System.person = {personId: sessionAttributes.temp.person};
+      }
 
       if (Object.keys(sessionAttributes).length === 0) {
         // No session attributes - so get the persistent ones
@@ -42,12 +49,6 @@ const requestInterceptor = {
                 startingBankroll: 1000,
                 players: [],
               };
-            } else {
-              // Reset the players
-              attributes.standard.players = [];
-              attributes.standard.dice = undefined;
-              attributes.standard.point = undefined;
-              attributes.standard.shooter = undefined;
             }
 
             // Temporary
@@ -134,6 +135,7 @@ function runGame(event, context, callback) {
 
   const skillFunction = skillBuilder.addRequestHandlers(
       Launch,
+      ResumeGame,
       PlayerCount,
       AddPlayer,
       ConfirmName,

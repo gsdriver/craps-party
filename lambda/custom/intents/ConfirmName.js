@@ -23,8 +23,16 @@ module.exports = {
     const res = require('../resources')(handlerInput);
 
     if (request.intent.name === 'AMAZON.YesIntent') {
-      const personId = (event.context.System.person) ? 
-        event.context.System.person.personId : attributes.temp.personId;
+      let personId;
+
+      if (attributes.temp.personId) {
+        // Use this one
+        personId = attributes.temp.personId;
+      } else if (event.context.System.person && event.context.System.person.personId) {
+        // Use this only if not already assigned
+        const idx = game.players.map((p) => p.personId).indexOf(event.context.System.person.personId);
+        personId = (idx > -1) ? undefined : event.context.System.person.personId;
+      }
 
       game.players.push({
         name: attributes.temp.confirmName,

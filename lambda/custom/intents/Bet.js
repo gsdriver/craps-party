@@ -228,7 +228,7 @@ module.exports = {
         }
       }
 
-      speech = speech.replace('{0}', bet.amount).replace('{1}', reprompt);
+      speech = speech.replace('{0}', bet.amount).replace('{1}', reprompt).replace('{2}', player.name);
       if (duplicateText) {
         speech = duplicateText + speech;
       }

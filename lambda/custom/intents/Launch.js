@@ -6,6 +6,7 @@
 
 const moment = require('moment-timezone');
 const https = require('https');
+const speechUtils = require('alexa-speech-utils')();
 
 module.exports = {
   canHandle: function(handlerInput) {
@@ -18,6 +19,7 @@ module.exports = {
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     let speech = '<audio src=\"https://s3-us-west-2.amazonaws.com/alexasoundclips/casinowelcome.mp3\"/> ';
     let response;
+    const game = attributes[attributes.currentGame];
 
     const timezone = await getUserTimezone(event);
     if (timezone) {
@@ -31,12 +33,24 @@ module.exports = {
       }
     }
 
-    attributes.temp.needPlayerCount = true;
-    speech += res.getString('LAUNCH_WELCOME').replace('{0}', res.getString('SKILL_NAME'));
-    return handlerInput.responseBuilder
-      .speak(speech)
-      .reprompt(res.getString('LAUNCH_REPROMPT'))
-      .getResponse();
+    if (game.players.length) {
+      // Ah, they have a game in progress ... ask if they want to continue or start new
+      attributes.temp.resumeGame = true;
+      speech += res.getString('LAUNCH_WELCOME_INPROGRESS')
+        .replace('{0}', res.getString('SKILL_NAME'))
+        .replace('{1}', speechUtils.and(game.players.map((x) => x.name)));
+      return handlerInput.responseBuilder
+        .speak(speech)
+        .reprompt(res.getString('LAUNCH_REPROMPT'))
+        .getResponse();
+    } else {
+      attributes.temp.needPlayerCount = true;
+      speech += res.getString('LAUNCH_WELCOME').replace('{0}', res.getString('SKILL_NAME'));
+      return handlerInput.responseBuilder
+        .speak(speech)
+        .reprompt(res.getString('LAUNCH_REPROMPT'))
+        .getResponse();
+    }
   },
 };
 
