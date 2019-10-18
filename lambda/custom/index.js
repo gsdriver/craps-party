@@ -24,11 +24,11 @@ const requestInterceptor = {
       const sessionAttributes = attributesManager.getSessionAttributes();
       const event = handlerInput.requestEnvelope;
 
-      if (sessionAttributes.temp) {
+/*      if (sessionAttributes.temp) {
         sessionAttributes.temp.person = (sessionAttributes.temp.person === 'fred') ? 'wilma' : 
           ((sessionAttributes.temp.person === 'wilma') ? undefined : 'fred');
         event.context.System.person = {personId: sessionAttributes.temp.person};
-      }
+      } */
 
       if (Object.keys(sessionAttributes).length === 0) {
         // No session attributes - so get the persistent ones
@@ -104,6 +104,7 @@ const saveResponseInterceptor = {
 
 const ErrorHandler = {
   canHandle(handlerInput, error) {
+    console.log(error);
     return error.name.startsWith('AskSdk');
   },
   handle(handlerInput, error) {

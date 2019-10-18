@@ -30,6 +30,11 @@ module.exports = {
         Key: 'craps-party/' + Date.now() + '.txt'}).promise();
     }
 
+    if (attributes.temp.needPlayerCount || attributes.temp.addingPlayers) {
+      // They didn't finish adding players - nuke the players before we save
+      game.players = [];
+    }
+
     // Clear and persist attributes
     attributes.temp = undefined;
     handlerInput.attributesManager.setPersistentAttributes(attributes);

@@ -5,12 +5,12 @@ const seedrandom = require('seedrandom');
 const common = {
   // AddPlayer.js
   'ADDPLAYER_NEED_NAME': 'Sorry, I didn\'t get that Please say a name for this player.',
-  'ADDPLAYER_CONFIRM_NAME': 'I heard {0}. Is that correct?',
-  'ADDPLAYER_SAME_PERSON': 'This sounds like the same person as {0}. Please have a different person speak up.',
+  'ADDPLAYER_CONFIRM_NAME': 'I heard {0}. Is that correct?|Sounds like {0} is ready to play. Did I get that name correct?',
+  'ADDPLAYER_SAME_PERSON': 'This sounds like {0}. Please have a different person speak up.',
   'ADDPLAYER_SAME_PERSON_REPROMPT': 'Please have a different person give their name.',
   // Bet.js
   'BET_INVALID_REPROMPT': 'What else can I help you with?',
-  'BET_NEED_NAME': 'Sorry I\'m not sure who is placing this bet. Who is this?',
+  'BET_NEED_NAME': 'Sorry I\'m not sure who is placing this bet. Who is this?|Sorry, who is this?',
   'BET_NO_BETFORODDS': 'Sorry, there is no bet to place odds on. ',
   'INVALID_BET_NO_POINT': 'Sorry, this bet can\'t be played until a point has been established.',
   'INVALID_BET_POINT': 'Sorry, this bet can\'t be played once a point has been established.',
@@ -21,7 +21,7 @@ const common = {
   'BET_PLACED_REPROMPT_NONPERSONAL_ROLL': 'Say roll to roll the dice.',
   'BET_WRONG_NAME': 'Sorry, {0} is not on my list of players. Is this {1}?',
   // ConfirmName.js
-  'CONFIRMNAME_NEXT': 'Great. Please say the name of the next player.',
+  'CONFIRMNAME_NEXT': 'Great. Please say the name of the next player.|Got it. Who is the next player?',
   'CONFIRMNAME_NEXT_REPROMPT': 'What is the name of the next player?',
   'CONFIRMNAME_PLAY_PERSONAL': 'OK, we have all the players names. You can start playing by saying your bet in any order.',
   'CONFIRMNAME_PLAY_NONPERSONAL': 'OK, we have all the player names. Let\'s play! {0}, you first. Place a bet.',
@@ -29,7 +29,7 @@ const common = {
   'CONFIRMNAME_TRYAGAIN': 'Please say your name again.',
   // Exit.js
   'EXIT_GAME': '{0} {1} Goodbye.',
-  'EXIT_COME_BACK': 'Come back later if you want to resume your game with {0}',
+  'EXIT_COME_BACK': 'Come back later if you want to resume your game with {0} <break time=\'300ms\'/>',
   // Help.js
   'HELP_ADDING_PLAYERS': 'Say the name of the first player ',
   'HELP_ADDING_PLAYERS_ADDED': 'Say the name of the next player you would like to add. Once we have all players registered, we can start to play the game.',
@@ -50,6 +50,8 @@ const common = {
   'GETPLAYER_NAME': 'What is the name of the <say-as interpret-as="ordinal">{0}</say-as> player?',
   'GETPLAYER_NAME_REPROMPT': 'Please tell me the player\'s name.',
   // ResumeGame.js
+  'RESUMEGAME_WELCOME_BACK': 'Welcome back! {0} Place a bet or say roll to roll the dice.',
+  'RESUMEGAME_PLAY_REPROMPT': 'Place a bet or say roll to roll the dice.',
   'RESUMEGAME_TRYAGAIN': 'Please say yes or no to let me know if you want to resume your game.',
   'RESUMEGAME_NO': 'OK. How many people are playing today?',
   'RESUMEGAME_NO_REPROMPT': 'How many people are playing?',
@@ -73,7 +75,7 @@ const common = {
   'ROLL_OFF_TABLE': 'Oops, one of the dice fell off the table - rolling again. ',
   'ROLL_ALLPLAYERS_OUT': 'That\'s it, all players are out of money! Come back soon to play {0} again! ',
   'ROLL_NEW_SHOOTER': 'New shooter coming out! {0} let\'s roll! |Good run, now let\'s give {0} a turn! ',
-  'ROLL_TAKE_ODDS': '<break time=\'300ms\'/> Now that the point is established, any player can place an odds bet. Place an odds bet up to {0} times your line bet. <amazon:effect name="whispered">It\'s the best bet in the house.</amazon:effect> Just say place odds bet or ',
+  'ROLL_TAKE_ODDS': '<break time=\'300ms\'/> Any player can now place an odds bet up to {0} times their line bet. <amazon:effect name="whispered">It\'s the best bet in the house.</amazon:effect> Just say place odds bet or ',
   // Unhandled.js
   'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.',
   'UNKNOWN_ADDING_PLAYERS': 'Please say a name to continue adding players before starting to play.',

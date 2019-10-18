@@ -37,7 +37,7 @@
             "codeUri": "lambda/custom",
             "functionName": "CrapsParty_v2",
             "handler": "index.handler",
-            "revisionId": "f03d71ba-1d09-45c7-8323-840614342063",
+            "revisionId": "d3c68691-273c-4b16-b20a-d96cabee8dcc",
             "runtime": "nodejs10.x"
           }
         ]

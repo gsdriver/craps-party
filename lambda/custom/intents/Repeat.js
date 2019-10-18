@@ -21,7 +21,7 @@ module.exports = {
     let speech = '';
     let i;
 
-    if (attributes.temp.rolled) {
+    if (!attributes.temp.needPlayerCount && !attributes.temp.addingPlayers) {
       if (game.point) {
         speech += res.getString('READ_POINT').replace('{0}', game.point);
       }

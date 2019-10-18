@@ -238,6 +238,7 @@ module.exports = {
 
     if (game.players.length === 0) {
       speech += res.getString('ROLL_ALLPLAYERS_OUT').replace('{0}', res.getString('SKILL_NAME'));
+      speech = '<prosody rate="fast">' + speech + '</prosody>';
       return handlerInput.responseBuilder
         .speak(speech)
         .withShouldEndSession(true)
@@ -252,6 +253,7 @@ module.exports = {
 
       // And reprompt
       speech += reprompt;
+      speech = '<prosody rate="fast">' + speech + '</prosody>';
       return handlerInput.responseBuilder
         .speak(speech)
         .reprompt(reprompt)
