@@ -22,10 +22,10 @@ module.exports = {
     const attributes = handlerInput.attributesManager.getSessionAttributes();
     const game = attributes[attributes.currentGame];
     const res = require('../resources')(handlerInput);
+    let speech = '';
 
-    if (request.intent.name === 'AMAZON.YesIntent') {
+    if ((request.type === 'IntentRequest') && (request.intent.name === 'AMAZON.YesIntent')) {
       // Let's play! First, what was the status of the last hand?
-      let speech = '';
       let i;
       if (game.point) {
         speech += res.getString('READ_POINT').replace('{0}', game.point);
@@ -56,7 +56,7 @@ module.exports = {
         .speak(res.getString('RESUMEGAME_WELCOME_BACK').replace('{0}', speech))
         .reprompt(res.getString('RESUMEGAME_PLAY_REPROMPT'))
         .getResponse();
-    } else if (request.intent.name === 'AMAZON.NoIntent') {
+    } else if ((request.type === 'IntentRequest') && (request.intent.name === 'AMAZON.NoIntent')) {
       // OK, go into prompt for name mode
       attributes.temp.resumeGame = undefined;
       attributes.temp.needPlayerCount = true;

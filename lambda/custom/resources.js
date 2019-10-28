@@ -12,9 +12,9 @@ const common = {
   'BET_INVALID_REPROMPT': 'What else can I help you with?',
   'BET_NEED_NAME': 'Sorry I\'m not sure who is placing this bet. Who is this?|Sorry, who is this?',
   'BET_NO_BETFORODDS': 'Sorry, there is no bet to place odds on. ',
-  'INVALID_BET_NO_POINT': 'Sorry, this bet can\'t be played until a point has been established.',
-  'INVALID_BET_POINT': 'Sorry, this bet can\'t be played once a point has been established.',
-  'INVALID_BET_HAVE_LINEBET': 'Sorry, you already have a line bet in play.',
+  'INVALID_BET_NO_POINT': 'Sorry, this bet can\'t be played until a point has been established. Try saying roll to roll the dice.',
+  'INVALID_BET_POINT': 'Sorry, this bet can\'t be played once a point has been established. Try placing an odds bet or a field bet <break time=\'300ms\'/> or say roll to roll the dice.',
+  'INVALID_BET_HAVE_LINEBET': 'Sorry, you already have a line bet in play. Try another type of bet like an odds bet or a field bet <break time=\'300ms\'/> or say roll to roll the dice.',
   'BET_DUPLICATE_ADDED': 'Adding to your existing bet for a total of ',
   'BET_PLACED_REPROMPT_PERSONAL': 'Anyone else want to yell out a bet? Or say roll to roll the dice.',
   'BET_PLACED_REPROMPT_NONPERSONAL': '{0}, you can place a bet. Or say roll to roll the dice.',
@@ -29,7 +29,7 @@ const common = {
   'CONFIRMNAME_TRYAGAIN': 'Please say your name again.',
   // Exit.js
   'EXIT_GAME': '{0} {1} Goodbye.',
-  'EXIT_COME_BACK': 'Come back later if you want to resume your game with {0} <break time=\'300ms\'/>',
+  'EXIT_COME_BACK': 'Come back later if you want to resume this game of {0} <break time=\'300ms\'/>',
   // Help.js
   'HELP_ADDING_PLAYERS': 'Say the name of the first player ',
   'HELP_ADDING_PLAYERS_ADDED': 'Say the name of the next player you would like to add. Once we have all players registered, we can start to play the game.',
@@ -80,6 +80,7 @@ const common = {
   'UNKNOWN_INTENT': 'Sorry, I didn\'t get that. Try saying Bet.',
   'UNKNOWN_ADDING_PLAYERS': 'Please say a name to continue adding players before starting to play.',
   'UNKNOWN_INTENT_REPROMPT': 'Try saying Bet.',
+  'UNKNOWN_PLAYER_COUNT': 'Please tell me how many people are playing before we start.',
 };
 
 const dollar = {

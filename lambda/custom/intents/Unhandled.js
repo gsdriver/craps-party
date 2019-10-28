@@ -17,6 +17,8 @@ module.exports = {
     // If adding players, tell them to say a name
     if (attributes.temp.addingPlayers) {
       speech = res.getString('UNKNOWN_ADDING_PLAYERS');
+    } else if (attributes.temp.needPlayerCount) {
+      speech = res.getString('UNKNOWN_PLAYER_COUNT');
     } else {
       speech = res.getString('UNKNOWN_INTENT');
     }
