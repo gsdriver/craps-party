@@ -9,7 +9,7 @@
   "dependencies": {
     "alexa-speech-utils": "~0.2.0",
     "ask-sdk": "^2.0.7",
-    "aws-sdk": "^2.248.1",
+    "aws-sdk": "^2.814.0",
     "dashbot": "^10.1.1",
     "moment-timezone": "^0.5.21",
     "seedrandom": "^2.4.3"
