@@ -11,7 +11,7 @@
     "ask-sdk": "^2.0.7",
     "aws-sdk": "^2.248.1",
     "dashbot": "^10.1.1",
-    "moment-timezone": "^0.5.21",
+    "moment-timezone": "^0.5.35",
     "seedrandom": "^2.4.3"
   },
   "devDependencies": {
